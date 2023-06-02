@@ -1,0 +1,69 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "airbnb-base",
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "import/no-unresolved": 0,
+        "import/extensions": 0,
+        "max-len": 0,
+        "no-plusplus": 0,
+        "no-restricted-syntax": 0,
+        "no-empty-function": 1,
+        "no-param-reassign": 1,
+        "no-await-in-loop": 1,
+        "no-use-before-define": 0,
+        "import/prefer-default-export": 0,
+        "no-undef": 0,
+        "no-bitwise": 0,
+        "indent": "off",
+        "@typescript-eslint/indent": [
+            "error"
+        ],
+        "brace-style": [
+            "error",
+            "stroustrup"
+        ],
+        "prefer-destructuring": "off",
+        "import/no-extraneous-dependencies": [
+            "error",
+            {
+                "devDependencies": [
+                    "**/test/**/**.ts"
+                ],
+                "optionalDependencies": false,
+                "peerDependencies": false
+            }
+        ],
+        // Glitchy in typescript, use the typescript version
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"]
+          
+    },
+    "overrides": [
+        {
+            "files": "**/test/**/**.ts",
+            "rules": {
+                "dot-notation": 0,
+                "no-loop-func": "off",
+                "no-unused-expressions": "off",
+                "func-names": "off",
+                "@typescript-eslint/no-var-requires": "off",
+                "import/no-extraneous-dependencies": "off"
+            }
+        }
+    ]
+}

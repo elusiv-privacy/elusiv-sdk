@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "experimentalDecorators": true,
+      "module": "ESNext",
+      "target": "ESNext",
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "declaration": true,
+      "outDir": "./dist",
+      "allowSyntheticDefaultImports": true,
+      "removeComments": true,
+      "noImplicitAny": true,
+      "noImplicitOverride": true,
+      "strict": true
+    },
+    "include": [
+      "src/**/*"
+    ]
+  }

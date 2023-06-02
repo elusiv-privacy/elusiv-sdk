@@ -1,0 +1,8 @@
+/node_modules
+/.nyc_output
+circuits/
+keypair.json
+/build
+.secrets
+dist/
+.vscode/

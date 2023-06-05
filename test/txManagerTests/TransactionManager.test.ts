@@ -560,7 +560,7 @@ describe('TransactionManager tests', () => {
                 isSolanaPayTransfer: false,
                 extraFee: { amount: BigInt(0), collector: SystemProgram.programId },
             },
-                undefined,
+            undefined,
             {
                 encryptedOwner: undefined as unknown as EncryptedValue,
                 amount: BigInt(3),
@@ -626,8 +626,8 @@ describe('TransactionManager tests', () => {
                 isSolanaPayTransfer: false,
                 extraFee: { amount: BigInt(0), collector: SystemProgram.programId },
             },
-                undefined,
-                undefined];
+            undefined,
+            undefined];
 
             expect(TransactionManager['getLowestFetchedNonceFromBatch'](batch)).to.equal(8);
         });
@@ -701,9 +701,9 @@ async function generateTxHistoryTxManager(
     txTypes: TxTypes[] = ['TOPUP'],
     startingPrivateBalance = BigInt(0),
 ): Promise<{
-    connection: TxHistoryConnectionDriver,
-    txs: ElusivTransaction[],
-}> {
+        connection: TxHistoryConnectionDriver,
+        txs: ElusivTransaction[],
+    }> {
     const history = await generateParsedTxHistory(startNonce, count, storeFee, tokenTypes, sender, warden, seedWrapper, sendFee, txTypes, startingPrivateBalance);
 
     const connection: TxHistoryConnectionDriver = new TxHistoryConnectionDriver();
@@ -727,13 +727,13 @@ async function generateParsedTxHistory(
     txTypes: TxTypes[] = ['TOPUP'],
     startingPrivateBalance = BigInt(0),
 ): Promise<{
-    id: PublicKey;
-    unserialized: ElusivTransaction;
-    tx: {
-        fst: ParsedTransactionWithMeta;
-        snd: ConfirmedSignatureInfo;
-    }[];
-}[]> {
+        id: PublicKey;
+        unserialized: ElusivTransaction;
+        tx: {
+            fst: ParsedTransactionWithMeta;
+            snd: ConfirmedSignatureInfo;
+        }[];
+    }[]> {
     const history = await generateTxHistory(count, sender, warden, tokenTypes, seedWrapper, txTypes, startNonce, startingPrivateBalance, 1, storeFee, sendFee);
     return history.map((tx) => ({ id: tx.unserialized.identifier, unserialized: tx.unserialized, tx: tx.serialized.map((p) => ({ fst: TxHistoryConnectionDriver.txToParsedTx(p.fst.tx, p.fst.cpi), snd: p.snd })) }));
 }

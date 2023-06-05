@@ -50,7 +50,7 @@ export async function generateTxHistory(
     minBatchingRate = 0,
 ): Promise<
     { serialized: Pair<{ tx: Transaction, cpi?: ParsedInnerInstruction[] }, ConfirmedSignatureInfo>[], unserialized: ElusivTransaction }[]
-> {
+    > {
     // The transactions and its signature
     const history: {
         serialized: Pair<{ tx: Transaction, cpi?: ParsedInnerInstruction[] }, ConfirmedSignatureInfo>[],

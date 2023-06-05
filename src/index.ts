@@ -12,7 +12,7 @@ export { ElusivViewer } from './public/elusivViewer.js';
 export {
     PrivateTxWrapper, PrivateTxWrapperShared, SendTxWrapper, TopUpTxWrapper,
 } from './public/transactionWrappers/TxWrappers.js';
-export { TokenType } from './public/tokenTypes/TokenType.js';
+export { TokenType, TokenTypeArr } from './public/tokenTypes/TokenType.js';
 export {
     airdropToken, getMintAccount, getTokenInfo, TokenInfo,
 } from './public/tokenTypes/TokenTypeFuncs.js';

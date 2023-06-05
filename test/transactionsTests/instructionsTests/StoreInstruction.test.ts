@@ -35,15 +35,15 @@ describe('Store Instruction tests', () => {
 
     const params: [TokenType, number, bigint, ReprScalar,
         ReprScalar, number, number, number] = [
-            tokenType,
-            hashAccIndex,
-            balance,
-            coreCommitmentHash,
-            commitmentHash,
-            merkleStartIndex,
-            feeVersion,
-            minBatchingRate,
-        ];
+        tokenType,
+        hashAccIndex,
+        balance,
+        coreCommitmentHash,
+        commitmentHash,
+        merkleStartIndex,
+        feeVersion,
+        minBatchingRate,
+    ];
 
     let seedWrapper: SeedWrapper;
 

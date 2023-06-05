@@ -13,8 +13,8 @@
 import { PartiallyDecodedInstruction, PublicKey } from '@solana/web3.js';
 import { ReprScalar } from 'elusiv-cryptojs';
 import { deserializeUint256LE, serializeUint256LE } from 'elusiv-serialization';
-import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 import { InputCommitmentBorsh } from '../txBuilding/serializedTypes/borshTypes/legacy/InputCommitmentBorsh.js';
+import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 
 // Warden is the fee payer
 const WARDEN_ACC_INDEX = 0;

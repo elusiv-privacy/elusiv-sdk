@@ -3,7 +3,7 @@
 // import { IncompleteCommitment, Poseidon } from 'elusiv-cryptojs';
 // import { SeedWrapper } from '../../src/sdk/clientCrypto/SeedWrapper.js';
 // import { FeeVersionData } from '../../src/sdk/paramManagers/fee/FeeManager.js';
-// import { getNumberFromTokenType } from '../../src/public/tokenTypes/TokenType.js';
+// import { getNumberFromTokenType } from '../../src/public/tokenTypes/TokenTypeFuncs.js';
 // import { StoreTx } from '../../src/sdk/transactions/StoreTx.js';
 // import { TransactionBuilding } from '../../src/sdk/transactions/txBuilding/TransactionBuilding.js';
 // import { TransactionDataValidation } from '../../src/sdk/txSending/TransactionDataValidation.js';

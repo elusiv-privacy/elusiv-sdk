@@ -6,7 +6,7 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { IncompleteCommitment, Poseidon, ReprScalar } from 'elusiv-cryptojs';
 import { FeeVersionData } from '../../../src/sdk/paramManagers/fee/FeeManager.js';
-import { getNumberFromTokenType, TokenType } from '../../../src/public/tokenTypes/TokenType.js';
+import { getNumberFromTokenType } from '../../../src/public/tokenTypes/TokenTypeFuncs.js';
 import { StoreTx } from '../../../src/sdk/transactions/StoreTx.js';
 import { TransactionBuilding } from '../../../src/sdk/transactions/txBuilding/TransactionBuilding.js';
 import { TransactionParsing } from '../../../src/sdk/transactions/txParsing/TransactionParsing.js';
@@ -18,6 +18,7 @@ import { PartialSendTx } from '../../../src/sdk/transactions/SendTx.js';
 import { SeedWrapper } from '../../../src/sdk/clientCrypto/SeedWrapper.js';
 import { getElusivProgramId } from '../../../src/public/WardenInfo.js';
 import { CommitmentMetadata } from '../../../src/sdk/clientCrypto/CommitmentMetadata.js';
+import { TokenType } from '../../../src/public/tokenTypes/TokenType.js';
 
 chai.use(chaiAsPromised);
 const expect = chai.expect;

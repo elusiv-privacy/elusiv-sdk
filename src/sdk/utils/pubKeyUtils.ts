@@ -3,7 +3,8 @@ import {
 } from '@solana/spl-token';
 import { Cluster, Connection, PublicKey } from '@solana/web3.js';
 import { bytesToBigIntLE } from 'elusiv-serialization';
-import { getAssociatedTokenAcc, TokenType } from '../../public/tokenTypes/TokenType.js';
+import { getAssociatedTokenAcc } from '../../public/tokenTypes/TokenTypeFuncs.js';
+import { TokenType } from '../../public/tokenTypes/TokenType.js';
 
 export function pubKeyToBigInt(pubKey: PublicKey): bigint {
     return bytesToBigIntLE(pubKey.toBytes());

@@ -3,9 +3,9 @@ import { bigIntToNumber } from 'elusiv-serialization';
 import { ElusivTransaction } from '../../sdk/transactions/ElusivTransaction.js';
 import { SendTx } from '../../sdk/transactions/SendTx.js';
 import { StoreTx } from '../../sdk/transactions/StoreTx.js';
-import { TokenType } from '../tokenTypes/TokenType.js';
 import { TransactionStatus } from '../TransactionStatus.js';
 import { TxTypes } from '../TxTypes.js';
+import { TokenType } from '../tokenTypes/TokenType.js';
 
 /**
  * Type representing data all types of tx wrappers contain

@@ -9,11 +9,12 @@ import { TransactionManager } from '../txManagers/TransactionManager.js';
 import {
     INVALID_SIZE, INVALID_TX_TYPE, SEND_ARITY, TIMEOUT_ERR,
 } from '../../constants.js';
-import { getNumberFromTokenType, TokenType } from '../../public/tokenTypes/TokenType.js';
+import { getNumberFromTokenType } from '../../public/tokenTypes/TokenTypeFuncs.js';
 import { buildCommitmentSet, GeneralSet } from '../utils/GeneralSet.js';
 import { ElusivTransaction } from '../transactions/ElusivTransaction.js';
 import { zipSameLength } from '../utils/utils.js';
 import { SeedWrapper } from '../clientCrypto/SeedWrapper.js';
+import { TokenType } from '../../public/tokenTypes/TokenType.js';
 
 export class CommitmentManager {
     txManager: TransactionManager;

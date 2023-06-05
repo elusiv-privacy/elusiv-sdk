@@ -3,13 +3,14 @@ import {
 } from '@solana/web3.js';
 import { IncompleteCommitment, Poseidon, ReprScalar } from 'elusiv-cryptojs';
 import { SeedWrapper } from '../../clientCrypto/SeedWrapper.js';
-import { getNumberFromTokenType, TokenType } from '../../../public/tokenTypes/TokenType.js';
+import { getNumberFromTokenType } from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { ComputeHashInstruction } from '../instructions/ComputeHashInstruction.js';
 import { StoreInstruction } from '../instructions/StoreInstruction.js';
 import { StoreTx } from '../StoreTx.js';
 import { RVKWrapper } from '../../clientCrypto/RVKWrapper.js';
 import { FeeVersionData } from '../../paramManagers/fee/FeeManager.js';
 import { CommitmentMetadata } from '../../clientCrypto/CommitmentMetadata.js';
+import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 
 export const COMPUTE_UNIT_LIMIT = 1400000;
 export const COMPUTE_UNIT_PRICE = 0;

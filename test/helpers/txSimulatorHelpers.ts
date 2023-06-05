@@ -6,7 +6,7 @@ import { ReprScalar, seededRandomUNSAFE } from 'elusiv-cryptojs';
 import { EncryptedValue } from '../../src/sdk/clientCrypto/encryption.js';
 import { SeedWrapper } from '../../src/sdk/clientCrypto/SeedWrapper.js';
 import { MAX_MT_COUNT } from '../../src/constants.js';
-import { getTokenInfo, TokenType } from '../../src/public/tokenTypes/TokenType.js';
+import { getTokenInfo } from '../../src/public/tokenTypes/TokenTypeFuncs.js';
 import { TxTypes } from '../../src/public/TxTypes.js';
 import { FeeCalculator } from '../../src/sdk/paramManagers/fee/FeeCalculator.js';
 import { FeeVersionData } from '../../src/sdk/paramManagers/fee/FeeManager.js';
@@ -21,6 +21,7 @@ import { FeeCalculatorDriver } from './drivers/FeeCalculatorDriver.js';
 import { getElusivProgramId } from '../../src/public/WardenInfo.js';
 import { Fee, OptionalFee } from '../../src/public/Fee.js';
 import { CommitmentMetadata } from '../../src/sdk/clientCrypto/CommitmentMetadata.js';
+import { TokenType } from '../../src/public/tokenTypes/TokenType.js';
 
 // These are all irrelevant for the client, so no need to test diff vals
 const DEFAULT_FEE_PAYER: PublicKey = new PublicKey('2ZtaNYfxgMsLdDpDqnmwXsG8VyUgvxueXkZzABYWmowk');
@@ -49,7 +50,7 @@ export async function generateTxHistory(
     minBatchingRate = 0,
 ): Promise<
     { serialized: Pair<{ tx: Transaction, cpi?: ParsedInnerInstruction[] }, ConfirmedSignatureInfo>[], unserialized: ElusivTransaction }[]
-    > {
+> {
     // The transactions and its signature
     const history: {
         serialized: Pair<{ tx: Transaction, cpi?: ParsedInnerInstruction[] }, ConfirmedSignatureInfo>[],

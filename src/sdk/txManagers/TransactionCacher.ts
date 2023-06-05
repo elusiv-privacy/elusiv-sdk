@@ -1,7 +1,7 @@
 import { equalsUint8Arr } from 'elusiv-serialization';
-import { TokenType } from '../../public/tokenTypes/TokenType.js';
 import { ElusivTransaction } from '../transactions/ElusivTransaction.js';
 import { IndexedMultiCacher } from '../utils/caching/IndexedMultiCacher.js';
+import { TokenType } from '../../public/tokenTypes/TokenType.js';
 
 export abstract class TransactionCacher {
     // Cache of all tx fetched so far (mixed token types)

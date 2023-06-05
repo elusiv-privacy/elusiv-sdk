@@ -5,7 +5,7 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { IncompleteCommitment, Poseidon, ReprScalar } from 'elusiv-cryptojs';
 import { FeeVersionData } from '../../../src/sdk/paramManagers/fee/FeeManager.js';
-import { getNumberFromTokenType, TokenType } from '../../../src/public/tokenTypes/TokenType.js';
+import { getNumberFromTokenType } from '../../../src/public/tokenTypes/TokenTypeFuncs.js';
 import { ComputeHashInstruction } from '../../../src/sdk/transactions/instructions/ComputeHashInstruction.js';
 import { StoreInstruction } from '../../../src/sdk/transactions/instructions/StoreInstruction.js';
 import { StoreTx } from '../../../src/sdk/transactions/StoreTx.js';
@@ -22,6 +22,7 @@ import { bytesToBs58 } from '../../../src/sdk/utils/base58Utils.js';
 import { CommitmentMetadata } from '../../../src/sdk/clientCrypto/CommitmentMetadata.js';
 import { getElusivProgramId } from '../../../src/public/WardenInfo.js';
 import { ParsedLamportTransfer } from '../../../src/sdk/transactions/txBuilding/serializedTypes/types.js';
+import { TokenType } from '../../../src/public/tokenTypes/TokenType.js';
 
 chai.use(chaiAsPromised);
 const expect = chai.expect;

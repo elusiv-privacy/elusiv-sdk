@@ -6,13 +6,14 @@ import { ReprScalar } from 'elusiv-cryptojs';
 import { deserializeUint256LE, serializeUint256LE } from 'elusiv-serialization';
 import { AccountReader } from '../../accountReaders/AccountReader.js';
 import { BASE_COMMITMENT_HASH_ACC_SEED, STORE_BASE_COMM_IX_CODE } from '../../../constants.js';
-import { getNumberFromTokenType, getTokenType, TokenType } from '../../../public/tokenTypes/TokenType.js';
+import { getNumberFromTokenType, getTokenType } from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { getElusivProgramId } from '../../../public/WardenInfo.js';
 import { BaseCommitmentHashRequestBorsh } from '../txBuilding/serializedTypes/borshTypes/legacy/BaseCommitmentHashRequestBorsh.js';
 import { RVKWrapper } from '../../clientCrypto/RVKWrapper.js';
 import { StoreInstructionBase } from './StoreInstructionBase.js';
 import { StoreBaseCommitmentBorshLegacy } from '../txBuilding/serializedTypes/borshTypes/legacy/StoreBaseCommitmentBorshLegacy.js';
 import { bs58ToBytes } from '../../utils/base58Utils.js';
+import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 
 export class StoreInstructionLegacy extends StoreInstructionBase {
     public readonly amount: bigint;

@@ -7,10 +7,10 @@ import { FeeCalculator } from '../../paramManagers/fee/FeeCalculator.js';
 import { FeeManager, FeeVersionData } from '../../paramManagers/fee/FeeManager.js';
 import { FeeUtils } from '../../paramManagers/fee/FeeUtils.js';
 import { TreeManager } from '../../paramManagers/TreeManager.js';
-import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 import { TransactionManager } from '../../txManagers/TransactionManager.js';
 import { GeneralSet } from '../../utils/GeneralSet.js';
 import { SeedWrapper } from '../../clientCrypto/SeedWrapper.js';
+import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 
 // Wrapper for the result returned from connection.getLatestBlockhash
 export type ChainStateInfo = {

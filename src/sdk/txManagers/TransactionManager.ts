@@ -1,11 +1,11 @@
 import { Cluster, Connection } from '@solana/web3.js';
 import { DEFAULT_FETCH_BATCH_SIZE, MAX_UINT32 } from '../../constants.js';
-import { TokenType } from '../../public/tokenTypes/TokenType.js';
 import { RVKWrapper } from '../clientCrypto/RVKWrapper.js';
 import { ElusivTransaction } from '../transactions/ElusivTransaction.js';
 import { SendTx } from '../transactions/SendTx.js';
 import { IdentifierTxFetcher } from './IdentifierTxFetcher.js';
 import { AbstractTxManager } from './AbstractTxManager.js';
+import { TokenType } from '../../public/tokenTypes/TokenType.js';
 
 export class TransactionManager extends IdentifierTxFetcher {
     public static createTxManager(

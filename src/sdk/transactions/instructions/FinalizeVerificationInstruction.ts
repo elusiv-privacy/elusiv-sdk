@@ -5,12 +5,13 @@ import {
     serializeUint256LE,
     padLE,
 } from 'elusiv-serialization';
-import { getNumberFromTokenType, getTokenType, TokenType } from '../../../public/tokenTypes/TokenType.js';
+import { getNumberFromTokenType, getTokenType } from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { decryptAES256CTRWithKey, EncryptedValue } from '../../clientCrypto/encryption.js';
 import { RVKWrapper } from '../../clientCrypto/RVKWrapper.js';
 import { FinalizeSendDataBorsh } from '../txBuilding/serializedTypes/borshTypes/legacy/FinalizeSendDataBorsh.js';
 import { FinalizeVerificationBorsh } from '../txBuilding/serializedTypes/borshTypes/legacy/FinalizeVerificationBorsh.js';
 import { bs58ToBytes } from '../../utils/base58Utils.js';
+import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 
 /*
 Accounts:

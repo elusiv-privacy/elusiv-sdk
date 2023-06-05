@@ -1,7 +1,7 @@
 import { PublicKey } from '@solana/web3.js';
-import { getTokenTypeFromStr, TokenInfo } from './TokenType.js';
+import { getTokenTypeFromStr, TokenInfo } from './TokenTypeFuncs.js';
 // Index of a token is how its tokentype is serialized e.g. lamports is at index 0, so it's serialied to 0
-export const tokenInfos : TokenInfo[] = [
+export const tokenInfos: TokenInfo[] = [
     {
         symbol: getTokenTypeFromStr('LAMPORTS'),
         mintMainnet: new PublicKey('11111111111111111111111111111111'),
@@ -9,7 +9,7 @@ export const tokenInfos : TokenInfo[] = [
         active: true,
         decimals: 9,
         min: 1000,
-        max: 360_000_000_000,
+        max: 360000000000,
         denomination: 1000000000,
         pythUSDPriceMainnet: new PublicKey('H6ARHf6YXhGYeQfUzQNGk6rDNnLBQKrenN712K4AQJEG'),
         pythUSDPriceDevnet: new PublicKey('J83w4HKfqxwcq3BEMMkPFSppX3gqekLyLJBexebFVkix'),
@@ -21,7 +21,7 @@ export const tokenInfos : TokenInfo[] = [
         active: true,
         decimals: 6,
         min: 1000,
-        max: 8_000_000_000,
+        max: 8000000000,
         denomination: 1000000,
         pythUSDPriceMainnet: new PublicKey('Gnt27xtC473ZT2Mw5u8wZ68Z3gULkSTb5DuxJy7eJotD'),
         pythUSDPriceDevnet: new PublicKey('5SSkXsEKQepHHAewytPVwdej4epN1nxgLVM84L4KXgy7'),
@@ -33,9 +33,45 @@ export const tokenInfos : TokenInfo[] = [
         active: true,
         decimals: 6,
         min: 1000,
-        max: 8_000_000_000,
+        max: 8000000000,
         denomination: 1000000,
         pythUSDPriceMainnet: new PublicKey('3vxLXJqLqF3JG5TCbYycbKWRBbCJQLxQmBGCkyqEEefL'),
         pythUSDPriceDevnet: new PublicKey('38xoQ4oeJCBrcVvca2cGk7iV1dAfrmTR1kmhSCJQ8Jto'),
+    },
+    {
+        symbol: getTokenTypeFromStr('mSOL'),
+        mintMainnet: new PublicKey('mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So'),
+        mintDevnet: new PublicKey('4EnmvnhxdmMrHQeHXh5tRnhCCUJpdCjmWjrnJPr3YNzi'),
+        active: true,
+        decimals: 9,
+        min: 1000,
+        max: 360000000000,
+        denomination: 1000000000,
+        pythUSDPriceMainnet: new PublicKey('E4v1BBgoso9s64TQvmyownAVJbhbEPGyzA3qn4n46qj9'),
+        pythUSDPriceDevnet: new PublicKey('9a6RNx3tCu1TSs6TBSfV2XRXEPEZXQ6WB7jRojZRvyeZ'),
+    },
+    {
+        symbol: getTokenTypeFromStr('BONK'),
+        mintMainnet: new PublicKey('DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263'),
+        mintDevnet: new PublicKey('5B2TabGvtPgV67jnyEhhSrFvTTBv4awdrPg2qxNashhm'),
+        active: true,
+        decimals: 5,
+        min: 1000000000,
+        max: 2000000000000000,
+        denomination: 100000,
+        pythUSDPriceMainnet: new PublicKey('8ihFLu5FimgTQ1Unh4dVyEHUGodJ5gJQCrQf4KUVB9bN'),
+        pythUSDPriceDevnet: new PublicKey('6bquU99ktV1VRiHDr8gMhDFt3kMfhCQo5nfNrg2Urvsn'),
+    },
+    {
+        symbol: getTokenTypeFromStr('SAMO'),
+        mintMainnet: new PublicKey('7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU'),
+        mintDevnet: new PublicKey('QcvLaJJPXCTmcBsif9DxivbHQLqqjUgcXU1F97sKoPJ'),
+        active: true,
+        decimals: 9,
+        min: 100000000,
+        max: 2000000000000000,
+        denomination: 1000000000,
+        pythUSDPriceMainnet: new PublicKey('5wRjzrwWZG3af3FE26ZrRj3s8A3BVNyeJ9Pt9Uf2ogdf'),
+        pythUSDPriceDevnet: new PublicKey('G7dySNGaxZ8y2E89aX1K6rFeBt2ZnYBqXuCu1k2Y9MEe'),
     },
 ];

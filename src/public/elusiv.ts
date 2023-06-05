@@ -16,9 +16,7 @@ import { SendTxData } from './txData/SendTxData.js';
 import { MERGE_NEEDED, SEND_ARITY, VIEWING_KEY_VERSION } from '../constants.js';
 import { ElusivTxData } from './txData/ElusivTxData.js';
 import { PrivateTxWrapper } from './transactionWrappers/TxWrappers.js';
-import {
-    getAssociatedTokenAcc, TokenType,
-} from './tokenTypes/TokenType.js';
+import { getAssociatedTokenAcc } from './tokenTypes/TokenTypeFuncs.js';
 import { getDefaultWarden, WardenInfo } from './WardenInfo.js';
 import { RemoteParamFetching, topupRParamsToSendRParams } from '../sdk/transactions/txBuilding/RemoteParamFetching.js';
 import { TransactionBuilding } from '../sdk/transactions/txBuilding/TransactionBuilding.js';
@@ -36,6 +34,7 @@ import { cleanUserInput, sleep } from '../sdk/utils/utils.js';
 import { ElusivTransaction } from '../sdk/transactions/ElusivTransaction.js';
 import { SendFeeCalcInfo, TopupFeeCalcInfo } from './types.js';
 import { TxTypes } from './TxTypes.js';
+import { TokenType } from './tokenTypes/TokenType.js';
 
 export class Elusiv extends ElusivViewer {
     /**

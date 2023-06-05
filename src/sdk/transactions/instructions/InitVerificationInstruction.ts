@@ -15,7 +15,7 @@ import { ReprScalar } from 'elusiv-cryptojs';
 import { deserializeUint256LE, serializeUint256LE } from 'elusiv-serialization';
 import { INIT_VERIFICATION_IX_CODE, MAX_MT_COUNT, SEND_PUBLIC_INPUT_IX_CODE } from '../../../constants.js';
 import { OptionalFee } from '../../../public/Fee.js';
-import { getNumberFromTokenType, getTokenType, TokenType } from '../../../public/tokenTypes/TokenType.js';
+import { getNumberFromTokenType, getTokenType } from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { CommitmentMetadata } from '../../clientCrypto/CommitmentMetadata.js';
 import { RVKWrapper } from '../../clientCrypto/RVKWrapper.js';
 import { InitVerificationInstructionBorsh } from '../txBuilding/serializedTypes/borshTypes/InitVerificationInstructionBorsh.js';
@@ -24,6 +24,7 @@ import { OptionalFeeBorsh } from '../txBuilding/serializedTypes/borshTypes/Optio
 import { SendPublicInputsBorsh } from '../txBuilding/serializedTypes/borshTypes/SendPublicInputsBorsh.js';
 import { InitVerificationInstructionBase } from './InitVerificationInstructionBase.js';
 import { bs58ToBytes } from '../../utils/base58Utils.js';
+import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 
 export class InitVerificationInstruction extends InitVerificationInstructionBase {
     public readonly optFee: OptionalFee;

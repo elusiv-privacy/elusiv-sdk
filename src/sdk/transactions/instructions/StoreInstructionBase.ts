@@ -8,10 +8,11 @@ import {
     BASE_COMMITMENT_BUFFER_ACC_SEED, FEE_COLLECTOR_SEED, GOVERNOR_ACC_SEED, POOL_ACC_SEED, STORAGE_ACC_SEED,
 } from '../../../constants.js';
 import {
-    getAssociatedTokenAcc, getPythPriceAccount, TokenType,
-} from '../../../public/tokenTypes/TokenType.js';
+    getAssociatedTokenAcc, getPythPriceAccount,
+} from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { getElusivProgramId } from '../../../public/WardenInfo.js';
 import { RVKWrapper } from '../../clientCrypto/RVKWrapper.js';
+import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 
 // Warden is the feepayer
 const WARDEN_INDEX = 2;

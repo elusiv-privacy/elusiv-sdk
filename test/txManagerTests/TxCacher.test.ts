@@ -3,9 +3,9 @@
 import { PublicKey } from '@solana/web3.js';
 import { expect } from 'chai';
 import { ReprScalar } from 'elusiv-cryptojs';
-import { TokenType } from '../../src/public/tokenTypes/TokenType.js';
 import { ElusivTransaction } from '../../src/sdk/transactions/ElusivTransaction.js';
 import { TxCacherInstance } from '../helpers/instances/TxCacherInstance.js';
+import { TokenType } from '../../src/public/tokenTypes/TokenType.js';
 
 describe('TxCacher tests', () => {
     let cacher: TxCacherInstance;

@@ -9,11 +9,12 @@ import { TreeManager } from '../sdk/paramManagers/TreeManager.js';
 import { TransactionManager } from '../sdk/txManagers/TransactionManager.js';
 import { getOwnerFromAcc } from '../sdk/utils/pubKeyUtils.js';
 import {
-    getAssociatedTokenAcc, getMintAccount, getTokenTypes, TokenType,
-} from './tokenTypes/TokenType.js';
+    getAssociatedTokenAcc, getMintAccount, getTokenTypes,
+} from './tokenTypes/TokenTypeFuncs.js';
 import { PrivateTxWrapper, SendTxWrapper, toPrivateTxWrapper } from './transactionWrappers/TxWrappers.js';
 import { getElusivFeeCollectorAddress, getElusivPoolAddress, getElusivProgramId } from './WardenInfo.js';
 import { sleep } from '../sdk/utils/utils.js';
+import { TokenType } from './tokenTypes/TokenType.js';
 
 export class ElusivViewer {
     // The cluster this instance is on

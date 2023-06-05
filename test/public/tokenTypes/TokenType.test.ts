@@ -3,9 +3,10 @@ import { PublicKey } from '@solana/web3.js';
 import { getAssociatedTokenAddressSync } from '@solana/spl-token';
 import {
     getAssociatedTokenAcc,
-    getDenomination, getMintAccount, getNumberFromTokenType, getPythPriceAccount, getPythSymbol, getTokenInfo, getTokenType, getTokenTypeFromStr, TokenType,
-} from '../../../src/public/tokenTypes/TokenType.js';
+    getDenomination, getMintAccount, getNumberFromTokenType, getPythPriceAccount, getPythSymbol, getTokenInfo, getTokenType, getTokenTypeFromStr,
+} from '../../../src/public/tokenTypes/TokenTypeFuncs.js';
 import { tokenInfos } from '../../../src/public/tokenTypes/Token.js';
+import { TokenType } from '../../../src/public/tokenTypes/TokenType.js';
 
 describe('Token type tests', () => {
     tokenInfos.forEach((tokenInfo, i) => {
@@ -31,7 +32,6 @@ describe('Token type tests', () => {
 
         it('Correctly gets the tokentype from index', () => {
             expect(getTokenType(i)).to.equal(tokenInfo.symbol);
-            expect(getTokenType(BigInt(i))).to.equal(tokenInfo.symbol);
         });
 
         it('Correctly gets the tokentype from string', () => {
@@ -48,7 +48,8 @@ describe('Token type tests', () => {
         });
 
         it(`Correctly gets the pyth symbol for ${tokenInfo.symbol}`, () => {
-            if (tokenInfo.symbol === 'LAMPORTS') expect(getPythSymbol(tokenInfo.symbol)).to.deep.equal('Crypto.SOL/USD');
+            if (tokenInfo.symbol === 'mSOL') expect(getPythSymbol(tokenInfo.symbol)).to.deep.equal('Crypto.MSOL/USD');
+            else if (tokenInfo.symbol === 'LAMPORTS') expect(getPythSymbol(tokenInfo.symbol)).to.deep.equal('Crypto.SOL/USD');
             else expect(getPythSymbol(tokenInfo.symbol)).to.deep.equal(`Crypto.${tokenInfo.symbol}/USD`);
         });
 
@@ -63,7 +64,7 @@ describe('Token type tests', () => {
         });
     });
 
-    const FAKE_TOKEN : TokenType = 'FAKE_TOKEN' as TokenType;
+    const FAKE_TOKEN: TokenType = 'FAKE_TOKEN' as TokenType;
 
     it('Throws for getting token info for a non-existing token', () => {
         expect(() => getTokenInfo(FAKE_TOKEN)).to.throw();

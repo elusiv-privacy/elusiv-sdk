@@ -12,7 +12,6 @@ import { FinalizeVerificationInstruction } from '../instructions/FinalizeVerific
 import { InitVerificationInstruction } from '../instructions/InitVerificationInstruction.js';
 import { StoreInstruction } from '../instructions/StoreInstruction.js';
 import { RVKWrapper } from '../../clientCrypto/RVKWrapper.js';
-import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 import { bs58ToBytes } from '../../utils/base58Utils.js';
 import { StoreInstructionBase } from '../instructions/StoreInstructionBase.js';
 import { StoreInstructionLegacy } from '../instructions/StoreInstructionLegacy.js';
@@ -21,6 +20,7 @@ import { InitVerificationInstructionLegacy } from '../instructions/InitVerificat
 import {
     isPartiallyDecodedInstruction, isParsedLamportTransfer, isParsedInstruction, isParsedSPLTransfer,
 } from '../txBuilding/serializedTypes/typeGuards.js';
+import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 
 const STORE_IX_INDEX = 2;
 

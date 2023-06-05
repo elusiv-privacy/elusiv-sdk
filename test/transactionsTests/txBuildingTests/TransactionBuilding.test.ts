@@ -21,13 +21,14 @@ import {
 import { FeeCalculator } from '../../../src/sdk/paramManagers/fee/FeeCalculator.js';
 import { FeeVersionData } from '../../../src/sdk/paramManagers/fee/FeeManager.js';
 import { FeeUtils } from '../../../src/sdk/paramManagers/fee/FeeUtils.js';
-import { TokenType, getNumberFromTokenType } from '../../../src/public/tokenTypes/TokenType.js';
+import { getNumberFromTokenType } from '../../../src/public/tokenTypes/TokenTypeFuncs.js';
 import { StoreTx } from '../../../src/sdk/transactions/StoreTx.js';
 import { InstructionBuilding } from '../../../src/sdk/transactions/txBuilding/InstructionBuilding.js';
 import { SendRemoteParams, TopupRemoteParams } from '../../../src/sdk/transactions/txBuilding/RemoteParamFetching.js';
 import { TransactionBuilding } from '../../../src/sdk/transactions/txBuilding/TransactionBuilding.js';
 import { FeeCalculatorDriver } from '../../helpers/drivers/FeeCalculatorDriver.js';
 import { activateCommitmentsSIMULATED } from '../../utils.js';
+import { TokenType } from '../../../src/public/tokenTypes/TokenType';
 
 // Need to import like this to get chai-as-promised to work
 

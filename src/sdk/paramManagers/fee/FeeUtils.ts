@@ -7,10 +7,11 @@ import {
 import { PriceStatus, PythHttpClient } from '@pythnetwork/client';
 import { getPythProgramKeyForCluster } from '@pythnetwork/client/lib/cluster.js';
 import {
-    getDenomination, getMintAccount, getPythSymbol, TokenType,
-} from '../../../public/tokenTypes/TokenType.js';
+    getDenomination, getMintAccount, getPythSymbol,
+} from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { BasicFee, Fee } from '../../../public/Fee.js';
 import { zipSameLength } from '../../utils/utils.js';
+import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 
 // Default precision is 9 due to 1 SOL = 10^9 Lamports
 const DEFAULT_PRECISION = 9;

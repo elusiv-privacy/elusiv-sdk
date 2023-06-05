@@ -2,11 +2,11 @@ import { PublicKey, SystemProgram } from '@solana/web3.js';
 import { expect } from 'chai';
 import { ReprScalar } from 'elusiv-cryptojs';
 import { SeedWrapper } from '../../../src/sdk/clientCrypto/SeedWrapper.js';
-import { TokenType } from '../../../src/public/tokenTypes/TokenType.js';
 import { StoreInstruction } from '../../../src/sdk/transactions/instructions/StoreInstruction.js';
 import { getElusivProgramId } from '../../../src/public/WardenInfo.js';
 import { CommitmentMetadata } from '../../../src/sdk/clientCrypto/CommitmentMetadata.js';
 import { bytesToBs58 } from '../../../src/sdk/utils/base58Utils.js';
+import { TokenType } from '../../../src/public/tokenTypes/TokenType.js';
 
 describe('Store Instruction tests', () => {
     const tokenType = 'LAMPORTS';
@@ -35,15 +35,15 @@ describe('Store Instruction tests', () => {
 
     const params: [TokenType, number, bigint, ReprScalar,
         ReprScalar, number, number, number] = [
-        tokenType,
-        hashAccIndex,
-        balance,
-        coreCommitmentHash,
-        commitmentHash,
-        merkleStartIndex,
-        feeVersion,
-        minBatchingRate,
-    ];
+            tokenType,
+            hashAccIndex,
+            balance,
+            coreCommitmentHash,
+            commitmentHash,
+            merkleStartIndex,
+            feeVersion,
+            minBatchingRate,
+        ];
 
     let seedWrapper: SeedWrapper;
 

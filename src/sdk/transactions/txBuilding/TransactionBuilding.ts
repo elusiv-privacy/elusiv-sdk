@@ -10,7 +10,7 @@ import {
 } from 'elusiv-circuits';
 import { ChainStateInfo, SendRemoteParams, TopupRemoteParams } from './RemoteParamFetching.js';
 import { InstructionBuilding } from './InstructionBuilding.js';
-import { getNumberFromTokenType, getTokenInfo, TokenType } from '../../../public/tokenTypes/TokenType.js';
+import { getNumberFromTokenType, getTokenInfo } from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { WardenInfo } from '../../../public/WardenInfo.js';
 import { TopupTxData } from '../../../public/txData/TopupTxData.js';
 import { Pair } from '../../utils/Pair.js';
@@ -35,6 +35,7 @@ import { RVKWrapper } from '../../clientCrypto/RVKWrapper.js';
 import { FeeVersionData } from '../../paramManagers/fee/FeeManager.js';
 import { CommitmentMetadata } from '../../clientCrypto/CommitmentMetadata.js';
 import { CommitmentManager } from '../../paramManagers/CommitmentManager.js';
+import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 
 export type TokenAcc = {
     owner: PublicKey,

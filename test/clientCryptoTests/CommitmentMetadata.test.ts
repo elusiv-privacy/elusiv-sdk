@@ -2,12 +2,12 @@ import { expect } from 'chai';
 import { mergeUint8 } from 'elusiv-serialization';
 import { COMMITMENT_METADATA_LENGTH } from 'elusiv-circuits';
 import { seededRandomUNSAFE } from 'elusiv-cryptojs';
-import { getTokenType } from '../../src/public/tokenTypes/TokenType';
 import { CommitmentMetadata } from '../../src/sdk/clientCrypto/CommitmentMetadata';
 import { MAX_UINT20, MAX_UINT32, MAX_UINT64 } from '../../src/constants.js';
 import { encryptAES256CTRWithKey } from '../../src/sdk/clientCrypto/encryption';
 import { RVKWrapper } from '../../src/sdk/clientCrypto/RVKWrapper';
 import { generateCommMetadataKey } from '../../src/sdk/clientCrypto/keyDerivation';
+import { getTokenType } from '../../src/public/tokenTypes/TokenTypeFuncs';
 
 describe('Commitmentment metadata tests', () => {
     let seed: Uint8Array;

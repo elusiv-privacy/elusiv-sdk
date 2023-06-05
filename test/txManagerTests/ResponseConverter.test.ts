@@ -6,7 +6,7 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { ResponseConverter } from '../../src/sdk/txManagers/ResponseConverter.js';
 import { PartialStoreTx, StoreTx } from '../../src/sdk/transactions/StoreTx.js';
-import { getNumberFromTokenType, TokenType } from '../../src/public/tokenTypes/TokenType.js';
+import { getNumberFromTokenType } from '../../src/public/tokenTypes/TokenTypeFuncs.js';
 import { TransactionBuilding } from '../../src/sdk/transactions/txBuilding/TransactionBuilding.js';
 import { FeeVersionData } from '../../src/sdk/paramManagers/fee/FeeManager.js';
 import { SEND_ARITY } from '../../src/constants.js';
@@ -17,6 +17,7 @@ import { NoncedTxResponse } from '../../src/sdk/txManagers/IdentifierTxFetcher.j
 import { EncryptedValue } from '../../src/sdk/clientCrypto/encryption.js';
 import { Pair } from '../../src/sdk/utils/Pair.js';
 import { messageToParsedTx } from '../utils.js';
+import { TokenType } from '../../src/public/tokenTypes/TokenType.js';
 
 // Need to import like this to get chai-as-promised to work
 chai.use(chaiAsPromised);

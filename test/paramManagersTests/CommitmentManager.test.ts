@@ -5,7 +5,7 @@
 // } from 'elusiv-cryptojs';
 // import { CommitmentManager } from '../../src/paramManagers/CommitmentManager.js';
 // import { TreeManager } from '../../src/paramManagers/TreeManager.js';
-// import { getNumberFromTokenType, TokenType } from '../../src/public/tokenTypes/TokenType.js';
+// import { getNumberFromTokenType, TokenType } from '../../src/public/tokenTypes/TokenTypeFuncs.js';
 // import { TxTypes } from '../../src/public/TxTypes.js';
 // import { ElusivTransaction } from '../../src/transactions/ElusivTransaction.js';
 // import { TransactionManager } from '../../src/txManagers/TransactionManager.js';

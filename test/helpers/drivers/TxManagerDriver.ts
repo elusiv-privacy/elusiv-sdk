@@ -18,7 +18,7 @@ export class TxManagerDriver {
             }).concat(new Array(count)).slice(0, count);
     }
 
-    public async getPrivateBalance(tokenType: TokenType, before? : number): Promise<bigint> {
+    public async getPrivateBalance(tokenType: TokenType, before?: number): Promise<bigint> {
         const beforeInner = before === undefined ? Number.MAX_SAFE_INTEGER : before;
         const t = this.txs.filter((tx) => tx !== undefined) as ElusivTransaction[];
         return t.filter((tx) => tx.tokenType === tokenType && tx.nonce < beforeInner)

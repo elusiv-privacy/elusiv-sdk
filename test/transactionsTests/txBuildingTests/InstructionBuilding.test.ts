@@ -4,7 +4,6 @@ import {
 } from '@solana/web3.js';
 import { expect } from 'chai';
 import { IncompleteCommitment, Poseidon } from 'elusiv-cryptojs';
-import { TokenType } from '../../../src/public/tokenTypes/TokenType.js';
 import { InstructionBuilding, COMPUTE_UNIT_LIMIT, COMPUTE_UNIT_PRICE } from '../../../src/sdk/transactions/txBuilding/InstructionBuilding.js';
 import { FeeVersionData } from '../../../src/sdk/paramManagers/fee/FeeManager.js';
 import { StoreInstruction } from '../../../src/sdk/transactions/instructions/StoreInstruction.js';
@@ -12,6 +11,7 @@ import { ComputeHashInstruction } from '../../../src/sdk/transactions/instructio
 import { StoreTx } from '../../../src/sdk/transactions/StoreTx.js';
 import { SeedWrapper } from '../../../src/sdk/clientCrypto/SeedWrapper.js';
 import { bytesToBs58 } from '../../../src/sdk/utils/base58Utils.js';
+import { TokenType } from '../../../src/public/tokenTypes/TokenType.js';
 
 describe('Instruction Building Tests', () => {
     let seedWrapper: SeedWrapper;

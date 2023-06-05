@@ -12,9 +12,10 @@ export { ElusivViewer } from './public/elusivViewer.js';
 export {
     PrivateTxWrapper, PrivateTxWrapperShared, SendTxWrapper, TopUpTxWrapper,
 } from './public/transactionWrappers/TxWrappers.js';
+export { TokenType } from './public/tokenTypes/TokenType.js';
 export {
-    TokenType, airdropToken, getMintAccount, getTokenInfo, TokenInfo,
-} from './public/tokenTypes/TokenType.js';
+    airdropToken, getMintAccount, getTokenInfo, TokenInfo,
+} from './public/tokenTypes/TokenTypeFuncs.js';
 export { TxTypes } from './public/TxTypes.js';
 export { TransactionStatus } from './public/TransactionStatus.js';
 export { getSendTxWithViewingKey, ViewingKey } from './compliance/ViewingKey';

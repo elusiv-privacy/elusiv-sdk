@@ -15,6 +15,7 @@ import { ElusivTransaction } from '../transactions/ElusivTransaction.js';
 import { zipSameLength } from '../utils/utils.js';
 import { SeedWrapper } from '../clientCrypto/SeedWrapper.js';
 import { TokenType } from '../../public/tokenTypes/TokenType.js';
+import { CommitmentMetadata } from '../clientCrypto/CommitmentMetadata.js';
 
 export class CommitmentManager {
     txManager: TransactionManager;
@@ -59,7 +60,12 @@ export class CommitmentManager {
     }
 
     public async getActiveCommitments(tokenType: TokenType, seedWrapper: SeedWrapper, beforeSend?: SendTx): Promise<GeneralSet<Commitment>> {
-        const activeTxs = await this.getActiveTxs(tokenType, seedWrapper, beforeSend);
+        // We need to manually check if the latest tx is confirmed
+        const activeTxs = await this.txManager.getActiveTxs(tokenType, beforeSend);
+        if (activeTxs.length === 0) return buildCommitmentSet() as GeneralSet<Commitment>;
+        if (!(await this.isTransactionConfirmed(activeTxs[0], seedWrapper))) {
+            throw new Error('Cannot create transaction while still waiting for tx to confirm');
+        }
         const activeComms = await this.getIncompleteCommitmentsForTxs(activeTxs, seedWrapper);
         return this.activateCommitments(activeComms.commitments, activeComms.startIndices);
     }
@@ -68,39 +74,6 @@ export class CommitmentManager {
         if (activeCommitments.length > SEND_ARITY) throw new Error(INVALID_SIZE('active commitmetns', activeCommitments.length, SEND_ARITY));
 
         return activeCommitments.length === SEND_ARITY;
-    }
-
-    // At most, we can have 4 commitments at once, namely 1 commitment from a send followed
-    // by 3 store commitments OR 4 store commitments (only possible if they are the first 4
-    // stores, else we always have one send commitment because a merge is a send).
-    // This is because if we have 4 commitments and try to add an 5th, we merge our
-    // previous 4 into 1 before adding the next one.
-    // Therefore, we do the following:
-    // 1. Fetch the last 4 store txs.
-    // 2. Fetch the sendTx starting at latest sendNonce.
-    // 3. Return latest send that was found and all stores with sendNonce === latestSend.sendNonce
-    // (i.e. stores that were made after that send)
-    // Param beforeSend is a an older SendTx prior to which we want to find out what active commitments went into it
-    public async getActiveTxs(tokenType: TokenType, seedWrapper: SeedWrapper, beforeSend?: SendTx): Promise<ElusivTransaction[]> {
-        const mostRecentTxs = (await this.txManager.fetchTxs(SEND_ARITY, tokenType, beforeSend?.nonce)).slice(0, SEND_ARITY);
-        if (mostRecentTxs.length === 0) return [];
-        // We need to manually check if the latest tx is confirmed
-        if (!(await this.isTransactionConfirmed(mostRecentTxs[0], seedWrapper))) {
-            throw new Error('Cannot create transaction while still waiting for tx to confirm');
-        }
-        mostRecentTxs[0].transactionStatus = 'CONFIRMED';
-
-        // Fetch either all SEND_ARITY transactions if we don't have any sends or fetch until the most recent send
-        for (let i = 0; i < mostRecentTxs.length; i++) {
-            // Return until the send if
-            if (mostRecentTxs[i]?.txType === 'SEND') {
-                // i + 1 because we want to include the send tx too
-                return mostRecentTxs.slice(0, i + 1);
-            }
-        }
-
-        // No sends? Return everything
-        return mostRecentTxs;
     }
 
     public async isCommitmentInserted(commitmentHash: ReprScalar, startingIndex = 0): Promise<boolean> {
@@ -166,18 +139,9 @@ export class CommitmentManager {
     }
 
     private async getCommitmentForPartialSend(partialSendTx: PartialSendTx, seedWrapper: SeedWrapper): Promise<IncompleteCommitment> {
-        try {
-            // Attempt to build with faster way to fetch first, but this can in some cases return the incorrect balance
-            const privateBalanceFast = (await this.txManager.getPrivateBalanceFromMetadata(
-                partialSendTx.tokenType,
-                partialSendTx.nonce,
-            ));
-            const res = CommitmentManager.buildCommitmentForPartialSend(partialSendTx, privateBalanceFast, seedWrapper);
-            // If we reconstructed the correct commitment hash, we can assume the balance we fetched is the correct one
+        if (partialSendTx.metadata) {
+            const res = CommitmentManager.commFromMetadata(seedWrapper, partialSendTx.metadata);
             if (equalsUint8Arr(res.getCommitmentHash(), partialSendTx.commitmentHash)) return res;
-        }
-        catch (e) {
-            // Failed to construct fast way, do slow way
         }
 
         // Otherwise fetch the slow, but 100% sure way
@@ -186,7 +150,7 @@ export class CommitmentManager {
             partialSendTx.nonce,
         );
         const resSlow = CommitmentManager.buildCommitmentForPartialSend(partialSendTx, await privateBalanceSlow, seedWrapper);
-        if (!equalsUint8Arr(resSlow.getCommitmentHash(), partialSendTx.commitmentHash)) throw new Error('Failed to reconstruct commitment');
+        if (!equalsUint8Arr(resSlow.getCommitmentHash(), partialSendTx.commitmentHash)) throw new Error(`Failed to reconstruct commitment for nonce ${partialSendTx.nonce}`);
         return resSlow;
     }
 
@@ -247,5 +211,16 @@ export class CommitmentManager {
         });
 
         return res;
+    }
+
+    private static commFromMetadata(seedWrapper: SeedWrapper, meta: CommitmentMetadata): IncompleteCommitment {
+        const nullifier = seedWrapper.generateNullifier(meta.nonce);
+        return new IncompleteCommitment(
+            nullifier,
+            meta.balance,
+            BigInt(getNumberFromTokenType(meta.tokenType)),
+            BigInt(meta.assocCommIndex),
+            Poseidon.getPoseidon(),
+        );
     }
 }

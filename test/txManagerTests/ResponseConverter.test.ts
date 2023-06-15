@@ -165,14 +165,14 @@ describe('ResponserConverter tests', () => {
                                                 seedWrapper,
                                             );
 
-                                            expectedUnserializedSend = sendTx.nonSerialized as PartialSendTx;
+                                            expectedUnserializedSend = sendTx.unserialized as PartialSendTx;
                                             expectedUnserializedSend.transactionStatus = 'PROCESSED';
 
                                             const initResponse: VersionedTransactionResponse = {
                                                 slot: 0,
                                                 transaction: {
                                                     signatures: [],
-                                                    message: sendTx.serializedInit.compileMessage(),
+                                                    message: sendTx.serialized[1].fst.tx.compileMessage(),
                                                 },
                                                 meta: null,
                                             };
@@ -181,7 +181,7 @@ describe('ResponserConverter tests', () => {
                                                 slot: 1,
                                                 transaction: {
                                                     signatures: [],
-                                                    message: sendTx.serializedFinalize.compileMessage(),
+                                                    message: sendTx.serialized[0].fst.tx.compileMessage(),
                                                 },
                                                 meta: null,
                                             };
@@ -348,11 +348,11 @@ describe('ResponserConverter tests', () => {
                 seedWrapper,
             );
 
-            expectedUnserializedSend = sendTx.nonSerialized as PartialSendTx;
+            expectedUnserializedSend = sendTx.unserialized as PartialSendTx;
             expectedUnserializedSend.transactionStatus = 'PROCESSED';
 
-            const initResponse = messageToParsedTx(sendTx.serializedInit.compileMessage());
-            const finalizeResponse = messageToParsedTx(sendTx.serializedFinalize.compileMessage());
+            const initResponse = messageToParsedTx(sendTx.serialized[1].fst.tx.compileMessage());
+            const finalizeResponse = messageToParsedTx(sendTx.serialized[0].fst.tx.compileMessage());
             const initSig: ConfirmedSignatureInfo = {
                 ...sig,
                 slot: 0,
@@ -622,10 +622,10 @@ describe('ResponserConverter tests', () => {
                 warden,
                 seedWrapper,
             );
-            expectedUnserializedSend = sendTx.nonSerialized as PartialSendTx;
+            expectedUnserializedSend = sendTx.unserialized as PartialSendTx;
             expectedUnserializedSend.transactionStatus = 'PROCESSED';
-            const initResponse = messageToParsedTx(sendTx.serializedInit.compileMessage() as Message);
-            const finalizeResponse = messageToParsedTx(sendTx.serializedFinalize.compileMessage() as Message);
+            const initResponse = messageToParsedTx(sendTx.serialized[1].fst.tx.compileMessage() as Message);
+            const finalizeResponse = messageToParsedTx(sendTx.serialized[0].fst.tx.compileMessage() as Message);
             const initSig: ConfirmedSignatureInfo = {
                 ...sig,
                 slot: 0,

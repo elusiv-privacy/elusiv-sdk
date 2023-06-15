@@ -6,7 +6,7 @@ import { ReprScalar, seededRandomUNSAFE } from 'elusiv-cryptojs';
 import { EncryptedValue } from '../../src/sdk/clientCrypto/encryption.js';
 import { SeedWrapper } from '../../src/sdk/clientCrypto/SeedWrapper.js';
 import { MAX_MT_COUNT } from '../../src/constants.js';
-import { getTokenInfo } from '../../src/public/tokenTypes/TokenTypeFuncs.js';
+import { TokenType } from '../../src/public/tokenTypes/TokenType.js';
 import { TxTypes } from '../../src/public/TxTypes.js';
 import { FeeCalculator } from '../../src/sdk/paramManagers/fee/FeeCalculator.js';
 import { FeeVersionData } from '../../src/sdk/paramManagers/fee/FeeManager.js';
@@ -14,14 +14,13 @@ import { ElusivTransaction } from '../../src/sdk/transactions/ElusivTransaction.
 import { FinalizeVerificationInstruction } from '../../src/sdk/transactions/instructions/FinalizeVerificationInstruction.js';
 import { InitVerificationInstruction } from '../../src/sdk/transactions/instructions/InitVerificationInstruction.js';
 import { PartialSendTx } from '../../src/sdk/transactions/SendTx.js';
-import { StoreTx } from '../../src/sdk/transactions/StoreTx.js';
 import { TransactionBuilding } from '../../src/sdk/transactions/txBuilding/TransactionBuilding.js';
 import { Pair } from '../../src/sdk/utils/Pair.js';
 import { FeeCalculatorDriver } from './drivers/FeeCalculatorDriver.js';
 import { getElusivProgramId } from '../../src/public/WardenInfo.js';
 import { Fee, OptionalFee } from '../../src/public/Fee.js';
 import { CommitmentMetadata } from '../../src/sdk/clientCrypto/CommitmentMetadata.js';
-import { TokenType } from '../../src/public/tokenTypes/TokenType.js';
+import { getTokenInfo } from '../../src/public/tokenTypes/TokenTypeFuncs.js';
 
 // These are all irrelevant for the client, so no need to test diff vals
 const DEFAULT_FEE_PAYER: PublicKey = new PublicKey('2ZtaNYfxgMsLdDpDqnmwXsG8VyUgvxueXkZzABYWmowk');
@@ -30,6 +29,11 @@ const DEFAULT_BLOCKHEIGHT = 164212646;
 const DEFAULT_HASH_ACC_INDEX = 123;
 const RANDOM_UNSAFE = seededRandomUNSAFE(42);
 const elusivAcc = getElusivProgramId('devnet');
+
+export type TxHistoryTx = {
+    serialized: Pair<{ tx: Transaction, cpi?: ParsedInnerInstruction[] }, ConfirmedSignatureInfo>[],
+    unserialized: ElusivTransaction
+}
 
 export async function generateTxHistory(
     count: number,
@@ -49,7 +53,7 @@ export async function generateTxHistory(
     feeVersion = 0,
     minBatchingRate = 0,
 ): Promise<
-    { serialized: Pair<{ tx: Transaction, cpi?: ParsedInnerInstruction[] }, ConfirmedSignatureInfo>[], unserialized: ElusivTransaction }[]
+    TxHistoryTx[]
     > {
     // The transactions and its signature
     const history: {
@@ -66,7 +70,6 @@ export async function generateTxHistory(
     let currentSlot = 0;
 
     for (let i = 0; i < tokenTypes.length && i < count; i++) {
-        const sig = getRandomSig(currentSlot);
         const feeVersionData: FeeVersionData = {
             feeVersion,
             minBatchingRate,
@@ -93,7 +96,7 @@ export async function generateTxHistory(
             seedWrapper,
         );
 
-        history.unshift({ serialized: [{ fst: { tx: store.serialized, cpi: store.cpi }, snd: sig }], unserialized: store.nonSerialized });
+        history.unshift(store);
         currentSlot += 1;
     }
 
@@ -109,7 +112,6 @@ export async function generateTxHistory(
 
         // First tx is always a topup
         if (i === count - 1 || txType === 'TOPUP') {
-            const sig = getRandomSig(currentSlot);
             const feeVersionData: FeeVersionData = {
                 feeVersion,
                 minBatchingRate,
@@ -132,9 +134,10 @@ export async function generateTxHistory(
                 feeVersionData,
                 warden,
                 seedWrapper,
+                currentSlot,
             );
 
-            history.unshift({ serialized: [{ fst: { tx: store.serialized, cpi: store.cpi }, snd: sig }], unserialized: store.nonSerialized });
+            history.unshift(store);
             currentSlot += 1;
         }
 
@@ -161,14 +164,10 @@ export async function generateTxHistory(
                 new PublicKey(new Uint8Array(32).fill(4)),
                 warden,
                 seedWrapper,
+                currentSlot,
             );
 
-            const serialized: Pair<{ tx: Transaction, cpi?: ParsedInnerInstruction[] }, ConfirmedSignatureInfo>[] = [
-                { fst: { tx: send.serializedFinalize }, snd: getRandomSig(currentSlot + 1) },
-                { fst: { tx: send.serializedInit }, snd: getRandomSig(currentSlot) },
-            ];
-
-            history.unshift({ serialized, unserialized: send.nonSerialized });
+            history.unshift(send);
 
             currentSlot += 2;
         }
@@ -177,7 +176,7 @@ export async function generateTxHistory(
     return history;
 }
 
-async function generateTopupTx(
+export async function generateTopupTx(
     amount: bigint,
     lastNonce: number,
     feeCalculator: FeeCalculator,
@@ -191,9 +190,10 @@ async function generateTopupTx(
     feeVersionData: FeeVersionData,
     warden: PublicKey,
     seedWrapper: SeedWrapper,
+    currentSlot = 0,
     recentBH = DEFAULT_RECENT_BH,
     blockHeight = DEFAULT_BLOCKHEIGHT,
-): Promise<{ serialized: Transaction; nonSerialized: StoreTx; cpi: ParsedInnerInstruction[] }> {
+): Promise<TxHistoryTx> {
     const nonSerialized = TransactionBuilding['buildStoreTx'](
         amount,
         lastNonce,
@@ -219,8 +219,9 @@ async function generateTopupTx(
     );
 
     const cpi = generateCPIsStore(BigInt(10_000), tokenType);
+    const sig = getRandomSig(currentSlot);
 
-    return { serialized, nonSerialized: nonSerialized.fst, cpi };
+    return { serialized: [{ fst: { tx: serialized, cpi }, snd: sig }], unserialized: nonSerialized.fst };
 }
 
 export function generateCPIsStore(fee: bigint, tokenType: TokenType): ParsedInnerInstruction[] {
@@ -298,8 +299,9 @@ export async function generateSendTransaction(
     recipient: PublicKey,
     warden: PublicKey,
     seedWrapper: SeedWrapper,
+    currentSlot = 0,
     optionalFee: OptionalFee = { amount: BigInt(0), collector: SystemProgram.programId },
-): Promise<{ serializedInit: Transaction; serializedFinalize: Transaction; nonSerialized: ElusivTransaction; }> {
+): Promise<TxHistoryTx> {
     const verAccIndex = 0;
     const vkeyIndex = 1;
     const treeIndices = new Array(MAX_MT_COUNT).fill(2);
@@ -391,7 +393,11 @@ export async function generateSendTransaction(
         extraFee: { amount: BigInt(0), collector: SystemProgram.programId },
     };
 
-    return { serializedInit: serializedInitTx, serializedFinalize: serializedFinalizeTx, nonSerialized };
+    const serialized = [
+        { fst: { tx: serializedFinalizeTx }, snd: getRandomSig(currentSlot + 1) },
+        { fst: { tx: serializedInitTx }, snd: getRandomSig(currentSlot) },
+    ];
+    return { serialized, unserialized: nonSerialized };
 }
 
 function generateTxFromIxs(

@@ -13,10 +13,15 @@ import { PartialStoreTx } from '../../src/sdk/transactions/StoreTx.js';
 import { TransactionManager } from '../../src/sdk/txManagers/TransactionManager.js';
 import { Pair } from '../../src/sdk/utils/Pair.js';
 import { TxHistoryConnectionDriver } from '../helpers/drivers/TxHistoryConnectionDriver.js';
-import { generateTxHistory } from '../helpers/txSimulatorHelpers.js';
+import {
+    TxHistoryTx, generateSendTransaction, generateTopupTx, generateTxHistory,
+} from '../helpers/txSimulatorHelpers.js';
 import { Fee } from '../../src/public/Fee';
 import { isTruthy } from '../../src/sdk/utils/utils';
 import { TokenType } from '../../src/public/tokenTypes/TokenType';
+import { FeeCalculatorDriver } from '../helpers/drivers/FeeCalculatorDriver';
+import { FeeCalculator } from '../../src/sdk/paramManagers/fee/FeeCalculator';
+import { FeeVersionData } from '../../src/sdk/paramManagers/fee/FeeManager';
 
 describe('TransactionManager tests', () => {
     let seedWrapper: SeedWrapper;
@@ -407,6 +412,85 @@ describe('TransactionManager tests', () => {
         });
     });
 
+    describe('Duplicate nonce tests', async () => {
+        // Store - send - store
+        let stSeSt: {
+            id: PublicKey;
+            unserialized: ElusivTransaction;
+            tx: {
+                fst: ParsedTransactionWithMeta;
+                snd: ConfirmedSignatureInfo;
+            }[];
+        }[];
+
+        const total = BigInt(1.5 * LAMPORTS_PER_SOL);
+
+        before(async () => {
+            const storeFee: Fee = {
+                tokenType: 'LAMPORTS', txFee: 0, privacyFee: 0, tokenAccRent: 0, lamportsPerToken: 1, extraFee: 0,
+            };
+            const feeCalculator = new FeeCalculatorDriver(storeFee) as unknown as FeeCalculator;
+            const feeVersionData: FeeVersionData = {
+                feeVersion: 1,
+                minBatchingRate: 2,
+            };
+            const scalar = new Uint8Array(32).fill(1) as ReprScalar;
+            const nonce = 1;
+            const sendingAcc = Keypair.generate().publicKey;
+            const encryptedOwner = await seedWrapper.getRootViewingKeyWrapper().encryptSeededSaltedAES256(sendingAcc.toBytes(), nonce);
+
+            // Store send store
+            stSeSt = [
+                // Initial topup
+                await generateTopupTx(BigInt(LAMPORTS_PER_SOL), nonce - 2, feeCalculator, 1, 'LAMPORTS', Keypair.generate().publicKey, BigInt(0), 1, true, 2, feeVersionData, Keypair.generate().publicKey, seedWrapper),
+                // Duplicate nonce send & topup
+                await generateSendTransaction(
+                    nonce,
+                    2,
+                    [scalar, scalar],
+                    [scalar, scalar],
+                    scalar,
+                    3,
+                    BigInt(0.5 * LAMPORTS_PER_SOL),
+                    BigInt(0.5 * LAMPORTS_PER_SOL),
+                    BigInt(0),
+                    'LAMPORTS',
+                    2,
+                    3,
+                    encryptedOwner,
+                    sendingAcc,
+                    Keypair.generate().publicKey,
+                    Keypair.generate().publicKey,
+                    seedWrapper,
+                ),
+                await generateTopupTx(BigInt(LAMPORTS_PER_SOL), nonce - 1, feeCalculator, 1, 'LAMPORTS', Keypair.generate().publicKey, BigInt(0), 1, true, 2, feeVersionData, Keypair.generate().publicKey, seedWrapper),
+            ].map(txHistTxToParsedTx);
+        });
+
+        it('Correctly fetches private balance with send-store on same nonce', async () => {
+            const connection = new TxHistoryConnectionDriver();
+
+            for (const tx of stSeSt) {
+                connection.addNewTxs(tx.id, tx.tx);
+            }
+            const txManager = TransactionManager.createTxManager(connection as unknown as Connection, 'devnet', seedWrapper.getRootViewingKeyWrapper());
+            const privBalance = await txManager.getPrivateBalance('LAMPORTS');
+            expect(privBalance).to.equal(total);
+        });
+        it('Correctly fetches private balance with store-send on same nonce', async () => {
+            const connection = new TxHistoryConnectionDriver();
+            // Store store send
+            const stStSe = [stSeSt[0], stSeSt[2], stSeSt[1]];
+
+            for (const tx of stStSe) {
+                connection.addNewTxs(tx.id, tx.tx);
+            }
+            const txManager = TransactionManager.createTxManager(connection as unknown as Connection, 'devnet', seedWrapper.getRootViewingKeyWrapper());
+            const privBalance = await txManager.getPrivateBalance('LAMPORTS');
+            expect(privBalance).to.equal(total);
+        });
+    });
+
     describe('Static helper method tests', () => {
         it('Correctly gets the lowest fetched nonce from an empty batch', () => {
             expect(TransactionManager['getLowestFetchedNonceFromBatch']([])).to.equal(-1);
@@ -735,7 +819,22 @@ async function generateParsedTxHistory(
         }[];
     }[]> {
     const history = await generateTxHistory(count, sender, warden, tokenTypes, seedWrapper, txTypes, startNonce, startingPrivateBalance, 1, storeFee, sendFee);
-    return history.map((tx) => ({ id: tx.unserialized.identifier, unserialized: tx.unserialized, tx: tx.serialized.map((p) => ({ fst: TxHistoryConnectionDriver.txToParsedTx(p.fst.tx, p.fst.cpi), snd: p.snd })) }));
+    return history.map(txHistTxToParsedTx);
+}
+
+function txHistTxToParsedTx(tx: TxHistoryTx): {
+    id: PublicKey;
+    unserialized: ElusivTransaction;
+    tx: {
+        fst: ParsedTransactionWithMeta;
+        snd: ConfirmedSignatureInfo;
+    }[];
+} {
+    return {
+        id: tx.unserialized.identifier,
+        unserialized: tx.unserialized,
+        tx: tx.serialized.map((p) => ({ fst: TxHistoryConnectionDriver.txToParsedTx(p.fst.tx, p.fst.cpi), snd: p.snd })),
+    };
 }
 
 function equalsStoreTx(a: PartialStoreTx | undefined, b: PartialStoreTx | undefined): void {

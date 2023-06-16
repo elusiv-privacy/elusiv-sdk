@@ -15,7 +15,7 @@ There, the main flow generally goes
 
 Doing these steps can be seen in the sample code below:
 
-```
+```js
 // Create the elusiv instance
 const cluster = 'devnet';
 const elusiv = await Elusiv.getElusivInstance(seed, getUserPubKey(), connection, cluster);

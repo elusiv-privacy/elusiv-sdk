@@ -27,6 +27,7 @@ const EXTERNALS = [
     'circomlibjs',
     'node-fetch',
     'ffjavascript',
+    '@elusiv/ffjavascript',
 ];
 
 const config = [{
@@ -67,8 +68,45 @@ const config = [{
     ],
 },
 {
+    input: 'src/index.ts',
+    output: {
+        file: 'build/elusiv-sdk.esm.js',
+        format: 'esm',
+        sourcemap: false,
+        globals: {
+            os: 'null',
+        },
+        name: 'elusivSDK',
+    },
+    external: EXTERNALS,
+    plugins: [
+        typescript(),
+        virtual({
+            fs: empty,
+            os: empty,
+            crypto: empty,
+            readline: empty,
+            ejs: empty,
+        }),
+        json(),
+        resolve({
+            dedupe: ['bn.js'],
+            browser: true,
+            preferBuiltins: false,
+            exportConditions: ['browser', 'default', 'module', 'require'],
+        }),
+        commonjs(),
+        replace({
+            preventAssignment: false,
+            'process.browser': true,
+        }),
+        nodePolyfills({ include: null }),
+        terser(),
+    ],
+},
+{
     input: './dist/index.d.ts',
-    output: [{ file: 'dist/elusiv-sdk.d.ts', format: 'es' }],
+    output: [{ file: 'build/elusiv-sdk.d.ts', format: 'es' }],
     plugins: [
         resolve(),
         dts(),

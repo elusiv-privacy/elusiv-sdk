@@ -6,6 +6,7 @@
     "types": "index.d.ts",
     "files": [
         "index.cjs.js",
+        "index.esm.js",
         "index.d.ts"
     ],
     "engines": {

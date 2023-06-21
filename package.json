@@ -1,8 +1,14 @@
 {
     "name": "@elusiv/sdk",
     "version": "0.1.13",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "main": "index.cjs.js",
+    "module": "index.esm.js",
+    "types": "index.d.ts",
+    "files": [
+        "index.cjs.js",
+        "index.esm.js",
+        "index.d.ts"
+    ],
     "type": "module",
     "engines": {
         "node": ">=18.0.0"

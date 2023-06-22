@@ -1,6 +1,6 @@
 {
     "name": "@elusiv/sdk",
-    "version": "0.1.13",
+    "version": "0.1.14",
     "main": "index.cjs.js",
     "module": "index.cjs.js",
     "types": "index.d.ts",

@@ -4,6 +4,14 @@ This is the SDK for interacting with the on-chain Elusiv Program
 ## Note for usage with webpack and some front-end environments
 Ensure `process.browser` is set. Depending on your environment, this might require a polyfill. You can verify this by trying to run `console.log(process.browser)` within your top-level app and ensuring it returns a truthy value.
 
+If you get the error `etc.sha512Sync not set`, add the following code to your app:
+
+```typescript
+import * as ed from '@noble/ed25519'
+import { sha512 } from '@noble/hashes/sha512'
+ed.etc.sha512Sync = (...m) => sha512(ed.etc.concatBytes(...m))
+```
+
 ### Usage
 The main idea of Elusiv is that you have a private balance on-chain, from which you can send money and receive money into while maintaining your privacy i.e. without anyone being able to see your associated public key. Therefore, the two core operations you can perform on your private balance is topping it up with funds and sending funds from your private balance. 
 

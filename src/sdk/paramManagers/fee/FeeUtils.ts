@@ -1,16 +1,12 @@
-import {
-    Cluster, Connection, PublicKey,
-} from '@solana/web3.js';
+import { Cluster, Connection, PublicKey } from '@solana/web3.js';
 import {
     getAssociatedTokenAddress, getMinimumBalanceForRentExemptAccount, getAccount, TokenInvalidAccountOwnerError, TokenAccountNotFoundError,
 } from '@solana/spl-token';
 import { PriceStatus, PythHttpClient } from '@pythnetwork/client';
 import { getPythProgramKeyForCluster } from '@pythnetwork/client/lib/cluster.js';
-import {
-    getDenomination, getMintAccount, getPythSymbol,
-} from '../../../public/tokenTypes/TokenTypeFuncs.js';
+import { getDenomination, getMintAccount, getPythPriceAcc } from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { BasicFee, Fee } from '../../../public/Fee.js';
-import { zipSameLength } from '../../utils/utils.js';
+import { sleep, zipSameLength } from '../../utils/utils.js';
 import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 
 // Default precision is 9 due to 1 SOL = 10^9 Lamports
@@ -77,20 +73,21 @@ export class FeeUtils {
     private static async fetchPythPrices(connection: Connection, cluster: Cluster, tokens: TokenType[], maxRetries = 5, msBetweenRetries = 200): Promise<number[]> {
         const pythPublicKey = getPythProgramKeyForCluster(cluster);
         const pythClient = new PythHttpClient(connection, pythPublicKey);
+        const priceAccs = tokens.map((t) => getPythPriceAcc(t, cluster));
+
         for (let i = 0; i < maxRetries; i++) {
             // eslint-disable-next-line no-await-in-loop
-            const priceData = await pythClient.getData();
-            const prices = tokens.map((t) => priceData.productPrice.get(getPythSymbol(t)));
-            if (prices.some((price) => price === undefined || price.price === undefined || price.status === PriceStatus.Halted || price.status === PriceStatus.Unknown)) {
+            const prices = await pythClient.getAssetPricesFromAccounts(priceAccs);
+            if (prices.some((price) => price.price === undefined || price.status === PriceStatus.Halted || price.status === PriceStatus.Unknown)) {
                 // eslint-disable-next-line no-console
                 console.warn(`Failed to fetch Pyth Data, retrying ${i}/${maxRetries}`);
-                // eslint-disable-next-line no-await-in-loop, no-promise-executor-return
-                await new Promise((resolve) => setTimeout(resolve, msBetweenRetries));
+                // eslint-disable-next-line no-await-in-loop
+                await sleep(msBetweenRetries);
             }
             else {
                 // We can assert price to be true here because we checked in the if statement above, typescript just isn't smart enough to understand this
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                return zipSameLength(prices, tokens).map(({ fst: price, snd: token }) => price!.price! / getDenomination(token));
+                return zipSameLength(prices, tokens).map(({ fst: price, snd: token }) => price.price! / getDenomination(token));
             }
         }
         throw new Error('Failed to fetch/parse pyth data, this usually means the price is undefined or the status is not trading');

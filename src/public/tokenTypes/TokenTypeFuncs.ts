@@ -130,37 +130,9 @@ export function getPythPriceAccount(t: TokenType, cluster: Cluster): PublicKey {
     }
 }
 
-export function getPythSymbol(t: TokenType): string {
-    let symbol: string;
-    switch (t) {
-        case 'LAMPORTS': {
-            symbol = 'SOL';
-            break;
-        }
-        case 'USDC': {
-            symbol = 'USDC';
-            break;
-        }
-        case 'USDT': {
-            symbol = 'USDT';
-            break;
-        }
-        case 'mSOL': {
-            symbol = 'MSOL';
-            break;
-        }
-        case 'BONK': {
-            symbol = 'BONK';
-            break;
-        }
-        case 'SAMO': {
-            symbol = 'SAMO';
-            break;
-        }
-        default: {
-            throw new Error(INVALID_TOKEN_TYPE);
-        }
-    }
-
-    return `Crypto.${symbol}/USD`;
+export function getPythPriceAcc(tokenType: TokenType, cluster: Cluster): PublicKey {
+    const tI = getTokenInfo(tokenType);
+    if (cluster === 'mainnet-beta') return tI.pythUSDPriceMainnet;
+    if (cluster === 'devnet') return tI.pythUSDPriceDevnet;
+    throw new Error('Invalid cluster');
 }

@@ -3,7 +3,7 @@ import { PublicKey } from '@solana/web3.js';
 import { getAssociatedTokenAddressSync } from '@solana/spl-token';
 import {
     getAssociatedTokenAcc,
-    getDenomination, getMintAccount, getNumberFromTokenType, getPythPriceAccount, getPythSymbol, getTokenInfo, getTokenType, getTokenTypeFromStr,
+    getDenomination, getMintAccount, getNumberFromTokenType, getPythPriceAccount, getTokenInfo, getTokenType, getTokenTypeFromStr,
 } from '../../../src/public/tokenTypes/TokenTypeFuncs.js';
 import { tokenInfos } from '../../../src/public/tokenTypes/Token.js';
 import { TokenType } from '../../../src/public/tokenTypes/TokenType.js';
@@ -48,9 +48,8 @@ describe('Token type tests', () => {
         });
 
         it(`Correctly gets the pyth symbol for ${tokenInfo.symbol}`, () => {
-            if (tokenInfo.symbol === 'mSOL') expect(getPythSymbol(tokenInfo.symbol)).to.deep.equal('Crypto.MSOL/USD');
-            else if (tokenInfo.symbol === 'LAMPORTS') expect(getPythSymbol(tokenInfo.symbol)).to.deep.equal('Crypto.SOL/USD');
-            else expect(getPythSymbol(tokenInfo.symbol)).to.deep.equal(`Crypto.${tokenInfo.symbol}/USD`);
+            expect(getPythPriceAccount(tokenInfo.symbol, 'devnet').equals(tokenInfo.pythUSDPriceDevnet));
+            expect(getPythPriceAccount(tokenInfo.symbol, 'mainnet-beta').equals(tokenInfo.pythUSDPriceMainnet));
         });
 
         it(`Correctly gets ATA for ${tokenInfo.symbol}`, () => {
@@ -95,8 +94,9 @@ describe('Token type tests', () => {
         expect(() => getPythPriceAccount(FAKE_TOKEN, 'mainnet-beta')).to.throw();
     });
 
-    it('Throws for getting pyth symbol for a non-existing token', () => {
-        expect(() => getPythSymbol(FAKE_TOKEN)).to.throw();
+    it('Throws for getting pyth price key for a non-existing token', () => {
+        expect(() => getPythPriceAccount(FAKE_TOKEN, 'devnet')).to.throw();
+        expect(() => getPythPriceAccount(FAKE_TOKEN, 'mainnet-beta')).to.throw();
     });
 
     it('Throws for getting ATA for a non-existing token', () => {

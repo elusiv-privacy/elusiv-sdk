@@ -1,4 +1,4 @@
-import { ConfirmedSignatureInfo, PublicKey } from '@solana/web3.js';
+import { ConfirmedSignatureInfo, PublicKey, SystemProgram } from '@solana/web3.js';
 import { bigIntToNumber } from 'elusiv-serialization';
 import { ElusivTransaction } from '../../sdk/transactions/ElusivTransaction.js';
 import { SendTx } from '../../sdk/transactions/SendTx.js';
@@ -90,7 +90,7 @@ function toWrapperSend(tx: SendTx): SendTxWrapper {
         transactionStatus: tx.transactionStatus,
         nonce: tx.nonce,
         warden: tx.warden,
-        reference: tx.refKey,
+        reference: tx.refKey && SystemProgram.programId.equals(tx.refKey) ? undefined : tx.refKey,
         memo: tx.memo,
     };
 }

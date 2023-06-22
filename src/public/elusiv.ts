@@ -41,13 +41,13 @@ export class Elusiv extends ElusivViewer {
      * Internal
      * Used for to speed up estimating getSendFeeEstimate and getSendFeeEstimate
      */
-    private feeCalculatorCached: FeeCalculator;
+    private feeCalculatorCached?: FeeCalculator;
 
     /**
      * Internal
      * Used for to speed up estimating getSendFeeEstimate and getSendFeeEstimate
      */
-    private tokenAccRentCached: number;
+    private tokenAccRentCached?: number;
 
     /**
      * Owner's public key
@@ -82,8 +82,6 @@ export class Elusiv extends ElusivViewer {
         feeManager: FeeManager,
         commManager: CommitmentManager,
         treeManager: TreeManager,
-        feeCalculator: FeeCalculator,
-        tokenAccRent: number,
         seedWrapper: SeedWrapper,
     ) {
         super(cluster, connection, txManager, commManager);
@@ -91,8 +89,6 @@ export class Elusiv extends ElusivViewer {
         this.txSender = new TransactionSender();
         this.feeManager = feeManager;
         this.treeManager = treeManager;
-        this.feeCalculatorCached = feeCalculator;
-        this.tokenAccRentCached = tokenAccRent;
         this.seedWrapper = seedWrapper;
     }
 
@@ -114,13 +110,11 @@ export class Elusiv extends ElusivViewer {
         // Intialize poseidon for cryptography
         const poseidonSetup = Poseidon.setupPoseidon();
         const seedWrapper = new SeedWrapper(seed);
-        const tokenRentPromise = getMinimumBalanceForRentExemptAccount(connection);
         const feeManager = FeeManager.createFeeManager(connection, cluster);
-        const feeCalculatorProm = feeManager.getFeeCalculator();
         const txManager = TransactionManager.createTxManager(connection, cluster, seedWrapper.getRootViewingKeyWrapper());
         const treeManager = TreeManager.createTreeManager(connection, cluster);
         const commManager = CommitmentManager.createCommitmentManager(treeManager, txManager);
-        const result = new Elusiv(cluster, owner, connection, txManager, feeManager, commManager, treeManager, (await feeCalculatorProm).calculator, await tokenRentPromise, seedWrapper);
+        const result = new Elusiv(cluster, owner, connection, txManager, feeManager, commManager, treeManager, seedWrapper);
         // Finish initializing poseidon
         await poseidonSetup;
         return result;
@@ -395,6 +389,12 @@ export class Elusiv extends ElusivViewer {
      * @returns An array of estimates for how much the topups will cost in the same order as the provided feeCalcInfos
      */
     public async estimateTopupFeesBatch(feeCalcInfos: TopupFeeCalcInfo[]): Promise<Fee[]> {
+        const feeCalculatorPromise = this.feeCalculatorCached
+            ? Promise.resolve(this.feeCalculatorCached)
+            : this.feeManager.getFeeCalculator().then((f) => f.calculator);
+        const tokenAccRentPromise = this.tokenAccRentCached
+            ? Promise.resolve(this.tokenAccRentCached)
+            : getMinimumBalanceForRentExemptAccount(this.connection);
         // Every SEND_ARITY topups, we need to merge
         const tokenPriceMap = await this.getTokenPriceMap(feeCalcInfos.map((feeCalcInfo) => feeCalcInfo.tokenType));
         // Count how many of which token types topups we have
@@ -407,14 +407,14 @@ export class Elusiv extends ElusivViewer {
             if (seenCount === SEND_ARITY) {
                 // If we have seen SEND_ARITY topups, we need to merge, so add the cost of one merge tx
                 res.push(
-                    this.estimateSendFeeInternal({ ...feeCalcInfo, recipient: SystemProgram.programId }, false, tokenPrice)
-                        .then((sendFee) => addFees(sendFee, this.estimateTopupFeeInternal(feeCalcInfo, tokenPrice))),
+                    this.estimateSendFeeInternal({ ...feeCalcInfo, recipient: SystemProgram.programId }, false, tokenPrice, tokenAccRentPromise, feeCalculatorPromise)
+                        .then(async (sendFee) => addFees(sendFee, await this.estimateTopupFeeInternal(feeCalcInfo, tokenPrice, feeCalculatorPromise))),
                 );
                 // We're back to 2 commitments available for this token type (the merge result and the one we just created)
                 tokenTxCountMap.set(feeCalcInfo.tokenType, 2);
             }
             else {
-                res.push(Promise.resolve(this.estimateTopupFeeInternal(feeCalcInfo, tokenPrice)));
+                res.push(Promise.resolve(this.estimateTopupFeeInternal(feeCalcInfo, tokenPrice, feeCalculatorPromise)));
                 tokenTxCountMap.set(feeCalcInfo.tokenType, seenCount + 1);
             }
         }
@@ -442,11 +442,17 @@ export class Elusiv extends ElusivViewer {
      * @returns An array of estimates for how much the sends will cost in the same order as the provided feeCalcInfos
      */
     public async estimateSendFeesBatch(feeCalcInfos: SendFeeCalcInfo[], allowOwnerOffCurve = false): Promise<Fee[]> {
+        const feeCalculatorPromise = this.feeCalculatorCached
+            ? Promise.resolve(this.feeCalculatorCached)
+            : this.feeManager.getFeeCalculator().then((f) => f.calculator);
+        const tokenAccRentPromise = this.tokenAccRentCached
+            ? Promise.resolve(this.tokenAccRentCached)
+            : getMinimumBalanceForRentExemptAccount(this.connection);
         const tokenPriceMap = await this.getTokenPriceMap(feeCalcInfos.map((feeCalcInfo) => feeCalcInfo.tokenType));
 
         const res: Promise<Fee>[] = [];
         for (const feeCalcInfo of feeCalcInfos) {
-            res.push(this.estimateSendFeeInternal(feeCalcInfo, allowOwnerOffCurve, tokenPriceMap.get(feeCalcInfo.tokenType) ?? -1));
+            res.push(this.estimateSendFeeInternal(feeCalcInfo, allowOwnerOffCurve, tokenPriceMap.get(feeCalcInfo.tokenType) ?? -1, tokenAccRentPromise, feeCalculatorPromise));
         }
         return Promise.all(res);
     }
@@ -462,16 +468,30 @@ export class Elusiv extends ElusivViewer {
         return this.seedWrapper.deriveKeyExternal(info, salt, length);
     }
 
-    private async estimateSendFeeInternal(feeCalcInfo: SendFeeCalcInfo, allowOwnerOffCurve: boolean, lamportsPerToken: number): Promise<Fee> {
+    private async estimateSendFeeInternal(
+        feeCalcInfo: SendFeeCalcInfo,
+        allowOwnerOffCurve: boolean,
+        lamportsPerToken: number,
+        tokenAccRentPromise: Promise<number>,
+        feeCalculatorPromise: Promise<FeeCalculator>,
+    ): Promise<Fee> {
         if (lamportsPerToken === -1) throw new Error(`Invalid Token price for token ${feeCalcInfo.tokenType}`);
         const recipientTA = await (feeCalcInfo.customRecipientTA === undefined ? getAssociatedTokenAcc(feeCalcInfo.recipient, feeCalcInfo.tokenType, this.cluster, allowOwnerOffCurve) : feeCalcInfo.customRecipientTA);
         // There is no such thing as a TA for Lamports, so always already exists in that case
-        const existsTA = (feeCalcInfo.tokenType === 'LAMPORTS') || tokenAccExists(this.connection, recipientTA);
-        const lamportFee = this.feeCalculatorCached.estimateSendFee(cleanUserInput(feeCalcInfo.amount), await existsTA, this.tokenAccRentCached);
+        const existsTAPromise = (feeCalcInfo.tokenType === 'LAMPORTS') || tokenAccExists(this.connection, recipientTA);
+        const [existsTA, tokenAccRent, feeCalculator] = await Promise.all([existsTAPromise, tokenAccRentPromise, feeCalculatorPromise]);
+        this.tokenAccRentCached = tokenAccRent;
+        this.feeCalculatorCached = feeCalculator;
+        const lamportFee = this.feeCalculatorCached.estimateSendFee(cleanUserInput(feeCalcInfo.amount), existsTA, this.tokenAccRentCached);
         return FeeUtils.lamportFeeToTokenFee(lamportFee, feeCalcInfo.tokenType, await lamportsPerToken, feeCalcInfo.extraFee ? bigIntToNumber(feeCalcInfo.extraFee.amount) : 0);
     }
 
-    private estimateTopupFeeInternal(feeCalcInfo: TopupFeeCalcInfo, lamportsPerToken: number): Fee {
+    private async estimateTopupFeeInternal(
+        feeCalcInfo: TopupFeeCalcInfo,
+        lamportsPerToken: number,
+        feeCalculatorPromise: Promise<FeeCalculator>,
+    ): Promise<Fee> {
+        this.feeCalculatorCached = await feeCalculatorPromise;
         const lamportFee = this.feeCalculatorCached.estimateStoreFee(cleanUserInput(feeCalcInfo.amount));
         return FeeUtils.lamportFeeToTokenFee(lamportFee, feeCalcInfo.tokenType, lamportsPerToken, 0);
     }

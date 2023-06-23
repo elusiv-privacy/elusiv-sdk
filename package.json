@@ -4,10 +4,17 @@
     "main": "index.cjs.js",
     "module": "index.esm.js",
     "types": "index.d.ts",
+    "type": "module",
     "files": [
         "index.cjs.js",
         "index.esm.js",
         "index.d.ts"
+    ],
+    "exports": [
+        {
+            "import": "./index.esm.js",
+            "require": "./index.cjs.js"
+        }
     ],
     "engines": {
         "node": ">=18.0.0"

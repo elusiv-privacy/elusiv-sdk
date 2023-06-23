@@ -1,6 +1,6 @@
 {
     "name": "@elusiv/sdk",
-    "version": "0.1.14",
+    "version": "0.1.15",
     "main": "index.esm.js",
     "module": "index.esm.js",
     "types": "index.d.ts",

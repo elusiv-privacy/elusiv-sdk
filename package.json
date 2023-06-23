@@ -1,15 +1,21 @@
 {
     "name": "@elusiv/sdk",
     "version": "0.1.14",
-    "main": "index.cjs.js",
+    "main": "index.esm.js",
     "module": "index.esm.js",
     "types": "index.d.ts",
+    "type": "module",
     "files": [
         "index.cjs.js",
         "index.esm.js",
         "index.d.ts"
     ],
-    "type": "module",
+    "exports": [
+        {
+            "import": "./index.esm.js",
+            "require": "./index.cjs.js"
+        }
+    ],
     "engines": {
         "node": ">=18.0.0"
     },
@@ -33,7 +39,7 @@
     "dependencies": {
         "@dao-xyz/borsh": "^5.1.5",
         "@noble/hashes": "^1.1.5",
-        "@pythnetwork/client": "^2.17.0",
+        "@pythnetwork/client": "^2.19.0",
         "@solana/spl-token": "^0.3.5",
         "@solana/web3.js": "^1.75.0",
         "aes-js": "^3.1.2",

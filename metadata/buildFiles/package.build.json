@@ -1,27 +1,34 @@
 {
     "name": "@elusiv/sdk",
-    "version": "0.1.14",
-    "main": "index.cjs.js",
-    "module": "index.cjs.js",
+    "version": "0.1.15",
+    "main": "index.esm.js",
+    "module": "index.esm.js",
     "types": "index.d.ts",
+    "type": "module",
     "files": [
         "index.cjs.js",
         "index.esm.js",
         "index.d.ts"
     ],
+    "exports": [
+        {
+            "import": "./index.esm.js",
+            "require": "./index.cjs.js"
+        }
+    ],
     "engines": {
         "node": ">=18.0.0"
     },
     "dependencies": {
-        "@dao-xyz/borsh": "^5.1.3",
+        "@dao-xyz/borsh": "^5.1.5",
         "@noble/hashes": "^1.1.5",
-        "@pythnetwork/client": "^2.8.0",
+        "@pythnetwork/client": "^2.19.0",
         "@solana/spl-token": "^0.3.5",
-        "@solana/web3.js": "^1.7.0",
+        "@solana/web3.js": "^1.75.0",
         "aes-js": "^3.1.2",
-        "bs58": "^4.0.1",
+        "bs58": "^5.0.0",
         "circomlibjs": "^0.1.7",
-        "node-fetch": "^3.3.0",
+        "node-fetch": "^3.3.1",
         "@elusiv/ffjavascript": "^0.2.57"
     },
     "scripts": {

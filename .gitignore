@@ -6,3 +6,4 @@ keypair.json
 .secrets
 dist/
 .vscode/
+temp/

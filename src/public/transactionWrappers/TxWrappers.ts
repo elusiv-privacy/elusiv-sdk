@@ -57,7 +57,9 @@ export type SendTxWrapper = PrivateTxWrapperShared & {
     readonly memo: string | undefined;
 }
 
-export type TopUpTxWrapper = PrivateTxWrapperShared;
+export type TopUpTxWrapper = {
+    readonly origin: PublicKey;
+} & PrivateTxWrapperShared;
 
 /**
  * These types represent wrappers containing information relevant to the user for private transactions.
@@ -98,6 +100,7 @@ function toWrapperSend(tx: SendTx): SendTxWrapper {
 function toWrapperTopUp(tx: StoreTx): TopUpTxWrapper {
     if (tx.signature === undefined) throw new Error('Missing signature, should never happen');
     return {
+        origin: tx.sender,
         txType: tx.txType,
         amount: bigIntToNumber(tx.amount),
         sig: tx.signature,

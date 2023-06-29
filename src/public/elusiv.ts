@@ -222,7 +222,7 @@ export class Elusiv extends ElusivViewer {
      * @param extraFee Optional fee to be collected by a third party in the same TokenType as the send. If not provided, no fee will be collected. When specifying the collector here,
      * make sure its ATA already exists. If you wish to use a custom TA for the collector, use the customFeeCollectorTA parameter.
      * @param isSolanaPayTransfer Whether this is a transfer for Solana Pay. The main difference this makes is that the actual transfer of funds is done using a seperate
-     * Transfer instruction, as required by the Solana Pay spec. If it is set to false, the transfer is done using a CPI. Defaults to true if refKey is set, false otherwise.
+     * Transfer instruction, as required by the Solana Pay spec. If it is set to false, the transfer is done using a CPI. Defaults to false.
      * @param allowOwnerOffCurve Controls wether we can send tokens to PDAs or other accounts whose public key does not lie on ed25519. Same idea as for
      * the getAssociatedTokenAddressSync function from the spl library.
      * @param customRecipientTA For the case that you want to provide an override for a Token Account to send to that is not the recipient's ATA. Make sure this token account
@@ -238,7 +238,7 @@ export class Elusiv extends ElusivViewer {
         refKey?: PublicKey,
         memo?: string,
         extraFee: OptionalFee = { amount: BigInt(0), collector: SystemProgram.programId },
-        isSolanaPayTransfer = refKey !== undefined,
+        isSolanaPayTransfer = false,
         allowOwnerOffCurve = false,
         customRecipientTA: PublicKey | undefined = undefined,
         customFeeCollectorTA: PublicKey | undefined = undefined,

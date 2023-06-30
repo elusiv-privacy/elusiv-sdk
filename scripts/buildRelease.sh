@@ -8,8 +8,8 @@ mkdir temp/elusiv-sdk
 mkdir build/release
 
 # Copy the files into the repo
-cp build/elusiv-sdk.cjs.js temp/elusiv-sdk/index.cjs.js
-cp build/elusiv-sdk.esm.js temp/elusiv-sdk/index.esm.js
+cp build/elusiv-sdk.cjs.js temp/elusiv-sdk/index.cjs
+cp build/elusiv-sdk.esm.js temp/elusiv-sdk/index.mjs
 cp build/elusiv-sdk.d.ts temp/elusiv-sdk/index.d.ts
 cp metadata/buildFiles/package.build.json temp/elusiv-sdk/package.json
 cp README.md temp/elusiv-sdk/README.md

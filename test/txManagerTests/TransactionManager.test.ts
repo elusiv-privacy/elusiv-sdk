@@ -3,7 +3,7 @@ import {
     Connection, Keypair, LAMPORTS_PER_SOL, ParsedTransactionWithMeta, PublicKey, SystemProgram,
 } from '@solana/web3.js';
 import { expect } from 'chai';
-import { Poseidon, ReprScalar } from 'elusiv-cryptojs';
+import { Poseidon, ReprScalar } from '@elusiv/cryptojs';
 import { TxTypes } from '../../src/public/TxTypes';
 import { EncryptedValue } from '../../src/sdk/clientCrypto/encryption.js';
 import { SeedWrapper } from '../../src/sdk/clientCrypto/SeedWrapper.js';

@@ -1,7 +1,7 @@
 import {
     Cluster, Connection, PublicKey,
 } from '@solana/web3.js';
-import { hexToUint8Array } from 'elusiv-serialization';
+import { hexToUint8Array } from '@elusiv/serialization';
 import { VIEWING_KEY_VERSION } from '../constants.js';
 import { SendTxWrapper, toPrivateTxWrapper } from '../public/transactionWrappers/TxWrappers.js';
 import { RVKWrapper } from '../sdk/clientCrypto/RVKWrapper.js';

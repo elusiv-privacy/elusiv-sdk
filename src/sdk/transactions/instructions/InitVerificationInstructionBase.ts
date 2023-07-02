@@ -11,8 +11,8 @@
 // #[pda(nullifier_account1, NullifierAccount, pda_offset = Some(tree_indices[1]), { include_child_accounts })]
 
 import { PartiallyDecodedInstruction, PublicKey } from '@solana/web3.js';
-import { ReprScalar } from 'elusiv-cryptojs';
-import { deserializeUint256LE, serializeUint256LE } from 'elusiv-serialization';
+import { ReprScalar } from '@elusiv/cryptojs';
+import { deserializeUint256LE, serializeUint256LE } from '@elusiv/serialization';
 import { InputCommitmentBorsh } from '../txBuilding/serializedTypes/borshTypes/legacy/InputCommitmentBorsh.js';
 import { TokenType } from '../../../public/tokenTypes/TokenType.js';
 

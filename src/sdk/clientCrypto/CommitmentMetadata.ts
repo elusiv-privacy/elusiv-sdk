@@ -1,12 +1,12 @@
 import { COMMITMENT_METADATA_LENGTH } from 'elusiv-circuits';
-import { IncompleteCommitment } from 'elusiv-cryptojs';
+import { IncompleteCommitment } from '@elusiv/cryptojs';
 import {
     deserializeUint16LE,
     deserializeUint32LE,
     deserializeUint64LE,
     deserializeUintLE,
-    mergeUint8, serializeUint16LE, serializeUint32LE, serializeUint64LE, serializeUintLE,
-} from 'elusiv-serialization';
+    concatBytes, serializeUint16LE, serializeUint32LE, serializeUint64LE, serializeUintLE,
+} from '@elusiv/serialization';
 import { MAX_UINT20, MAX_UINT32, MAX_UINT64 } from '../../constants.js';
 import { getNumberFromTokenType, getTokenType } from '../../public/tokenTypes/TokenTypeFuncs.js';
 import { EncryptedValue } from './encryption.js';
@@ -51,7 +51,7 @@ export class CommitmentMetadata {
     // Nonce|TokenType|AssocCommIndex|Amount
     // 4B   |2B       |3B            |8B
     public toBytes(): Uint8Array {
-        return mergeUint8([
+        return concatBytes([
             serializeUint32LE(this.nonce),
             serializeUint16LE(getNumberFromTokenType(this.tokenType)),
             serializeUintLE(BigInt(this.assocCommIndex), 3),

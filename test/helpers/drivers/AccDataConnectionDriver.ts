@@ -3,12 +3,12 @@ import {
     Commitment,
     GetAccountInfoConfig, PublicKey,
 } from '@solana/web3.js';
-import { zeros } from 'elusiv-serialization';
+import { zeros } from '@elusiv/serialization';
 
 // Simulates a connection object for testing that provides access
 // to account data
 export class AccDataConnectionDriver {
-    private addressToData : Map<string, Buffer>;
+    private addressToData: Map<string, Buffer>;
 
     public constructor() {
         this.addressToData = new Map<string, Buffer>();
@@ -21,7 +21,7 @@ export class AccDataConnectionDriver {
     ): Promise<AccountInfo<Buffer> | null> {
         const data = this.addressToData.get(publicKey.toBase58());
         if (data === undefined) return Promise.resolve(null);
-        const res : AccountInfo<Buffer> = {
+        const res: AccountInfo<Buffer> = {
             executable: false,
             owner: new PublicKey(zeros(32)),
             lamports: 0,
@@ -30,7 +30,7 @@ export class AccDataConnectionDriver {
         return Promise.resolve(res);
     }
 
-    public addAccountData(pubKey : PublicKey, data : Buffer) : void {
+    public addAccountData(pubKey: PublicKey, data: Buffer): void {
         this.addressToData.set(pubKey.toBase58(), data);
     }
 }

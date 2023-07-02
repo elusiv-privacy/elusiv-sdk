@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
     MerkleTree, MontScalar, Poseidon, ReprScalar,
-} from 'elusiv-cryptojs';
-import { zeros } from 'elusiv-serialization';
+} from '@elusiv/cryptojs';
+import { zeros } from '@elusiv/serialization';
 import { StorageAccBorsh } from '../../../src/sdk/transactions/txBuilding/serializedTypes/borshTypes/accounts/StorageAccBorsh';
 import {
     GlobalIndex, IndexConverter, LocalIndex, localIndexToString,

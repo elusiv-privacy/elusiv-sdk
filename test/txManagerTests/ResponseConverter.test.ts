@@ -1,4 +1,4 @@
-import { IncompleteCommitment, Poseidon, ReprScalar } from 'elusiv-cryptojs';
+import { IncompleteCommitment, Poseidon, ReprScalar } from '@elusiv/cryptojs';
 import {
     ConfirmedSignatureInfo, Keypair, Message, ParsedTransactionWithMeta, VersionedMessage, VersionedTransactionResponse,
 } from '@solana/web3.js';

@@ -1,5 +1,5 @@
 import { Transaction } from '@solana/web3.js';
-import { ReprScalar } from 'elusiv-cryptojs';
+import { ReprScalar } from '@elusiv/cryptojs';
 import { INVALID_TX_DATA } from '../../constants.js';
 import { Fee } from '../Fee.js';
 import { WardenInfo } from '../WardenInfo.js';

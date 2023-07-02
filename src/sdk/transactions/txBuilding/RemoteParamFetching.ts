@@ -1,7 +1,7 @@
 import { getMinimumBalanceForRentExemptAccount } from '@solana/spl-token';
 import { Cluster, Connection } from '@solana/web3.js';
 import { getSendQuadraProofParamsStatic, ProofParams } from 'elusiv-circuits';
-import { Commitment } from 'elusiv-cryptojs';
+import { Commitment } from '@elusiv/cryptojs';
 import { CommitmentManager } from '../../paramManagers/CommitmentManager.js';
 import { FeeCalculator } from '../../paramManagers/fee/FeeCalculator.js';
 import { FeeManager, FeeVersionData } from '../../paramManagers/fee/FeeManager.js';

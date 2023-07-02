@@ -4,7 +4,7 @@ import {
 } from '@solana/web3.js';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { IncompleteCommitment, Poseidon, ReprScalar } from 'elusiv-cryptojs';
+import { IncompleteCommitment, Poseidon, ReprScalar } from '@elusiv/cryptojs';
 import { FeeVersionData } from '../../../src/sdk/paramManagers/fee/FeeManager.js';
 import { getNumberFromTokenType } from '../../../src/public/tokenTypes/TokenTypeFuncs.js';
 import { StoreTx } from '../../../src/sdk/transactions/StoreTx.js';

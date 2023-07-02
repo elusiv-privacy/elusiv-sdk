@@ -1,7 +1,7 @@
 // /* eslint-disable @typescript-eslint/no-non-null-assertion */
-// import { ReprScalar } from 'elusiv-cryptojs';
+// import { ReprScalar } from '@elusiv/cryptojs';
 // import { expect } from 'chai';
-// import { padLE } from 'elusiv-serialization';
+// import { padLE } from '@elusiv/serialization';
 // import { SystemProgram } from '@solana/web3.js';
 // import { InitVerificationInstruction } from '../../../src/sdk/transactions/instructions/InitVerificationInstruction.js';
 // import { MAX_MT_COUNT, SEND_ARITY } from '../../../src/constants.js';

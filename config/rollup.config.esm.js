@@ -25,6 +25,8 @@ const EXTERNALS = [
     'node-fetch',
     'ffjavascript',
     '@elusiv/ffjavascript',
+    '@elusiv/serialization',
+    '@elusiv/cryptojs',
 ];
 
 const config = [{

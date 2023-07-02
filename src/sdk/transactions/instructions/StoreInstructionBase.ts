@@ -2,7 +2,7 @@ import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import {
     AccountMeta, Cluster, PartiallyDecodedInstruction, PublicKey, SystemProgram,
 } from '@solana/web3.js';
-import { ReprScalar } from 'elusiv-cryptojs';
+import { ReprScalar } from '@elusiv/cryptojs';
 import { AccountReader } from '../../accountReaders/AccountReader.js';
 import {
     BASE_COMMITMENT_BUFFER_ACC_SEED, FEE_COLLECTOR_SEED, GOVERNOR_ACC_SEED, POOL_ACC_SEED, STORAGE_ACC_SEED,

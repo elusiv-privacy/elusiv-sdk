@@ -1,9 +1,9 @@
 import { Connection, Keypair, PublicKey } from '@solana/web3.js';
-import { mergeUint8 } from 'elusiv-serialization';
+import { concatBytes } from '@elusiv/serialization';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { serialize } from '@dao-xyz/borsh';
-import { MontScalar } from 'elusiv-cryptojs';
+import { MontScalar } from '@elusiv/cryptojs';
 import { AccountReader } from '../../src/sdk/accountReaders/AccountReader.js';
 import { StorageAccountReader } from '../../src/sdk/accountReaders/StorageAccountReader.js';
 import { TreeChunkAccountReader } from '../../src/sdk/accountReaders/TreeChunkAccountReader.js';
@@ -51,7 +51,7 @@ describe('Storage Acc parsing tests', () => {
         for (let i = 0; i < STORAGE_MT_CHUNK_COUNT; i++) {
             const isActiveByte = Uint8Array.from(i < activeCount ? [1] : [0]);
             chunkKeysFormatted[i] = Keypair.fromSeed(new Uint8Array(32).fill(i)).publicKey;
-            chunkKeys[i] = mergeUint8([isActiveByte, chunkKeysFormatted[i].toBytes()]);
+            chunkKeys[i] = concatBytes([isActiveByte, chunkKeysFormatted[i].toBytes()]);
             // First byte indicates in use
             chunks[i] = new Uint8Array(1 + STORAGE_MT_VALUES_PER_ACCOUNT * 32).fill(0);
             chunks[i][0] = i < activeCount ? 1 : 0;
@@ -78,7 +78,7 @@ describe('Storage Acc parsing tests', () => {
         }
 
         archiveMTRootHistory = Uint8Array.from(rootHistory);
-        const mergedKeys = mergeUint8(chunkKeys);
+        const mergedKeys = concatBytes(chunkKeys);
 
         const toSerialize = new StorageAccBorsh(
             pdaData,
@@ -116,7 +116,7 @@ describe('Storage Acc parsing tests', () => {
 
     it('Correctly parses chunkKeys', () => {
         const parsed = storageData.pubkeys;
-        expect(parsed).to.deep.equal(mergeUint8(chunkKeys));
+        expect(parsed).to.deep.equal(concatBytes(chunkKeys));
     });
 
     it('Correctly parses mtRootCount', () => {

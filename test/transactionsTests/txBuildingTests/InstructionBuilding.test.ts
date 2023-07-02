@@ -3,7 +3,7 @@ import {
     ComputeBudgetProgram, Keypair, PublicKey, SystemProgram,
 } from '@solana/web3.js';
 import { expect } from 'chai';
-import { IncompleteCommitment, Poseidon } from 'elusiv-cryptojs';
+import { IncompleteCommitment, Poseidon } from '@elusiv/cryptojs';
 import { InstructionBuilding, COMPUTE_UNIT_LIMIT, COMPUTE_UNIT_PRICE } from '../../../src/sdk/transactions/txBuilding/InstructionBuilding.js';
 import { FeeVersionData } from '../../../src/sdk/paramManagers/fee/FeeManager.js';
 import { StoreInstruction } from '../../../src/sdk/transactions/instructions/StoreInstruction.js';

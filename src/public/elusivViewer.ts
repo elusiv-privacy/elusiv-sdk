@@ -1,8 +1,8 @@
 import {
     Cluster, ConfirmedSignatureInfo, Connection, GetVersionedTransactionConfig, ParsedTransactionWithMeta, PublicKey,
 } from '@solana/web3.js';
-import { Poseidon } from 'elusiv-cryptojs';
-import { hexToUint8Array } from 'elusiv-serialization';
+import { Poseidon } from '@elusiv/cryptojs';
+import { hexToUint8Array } from '@elusiv/serialization';
 import { RVKWrapper } from '../sdk/clientCrypto/RVKWrapper.js';
 import { CommitmentManager } from '../sdk/paramManagers/CommitmentManager.js';
 import { TreeManager } from '../sdk/paramManagers/TreeManager.js';

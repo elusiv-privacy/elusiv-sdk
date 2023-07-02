@@ -1,5 +1,5 @@
 import { ConfirmedSignatureInfo, PublicKey, SystemProgram } from '@solana/web3.js';
-import { bigIntToNumber } from 'elusiv-serialization';
+import { bigIntToNumber } from '@elusiv/serialization';
 import { ElusivTransaction } from '../../sdk/transactions/ElusivTransaction.js';
 import { SendTx } from '../../sdk/transactions/SendTx.js';
 import { StoreTx } from '../../sdk/transactions/StoreTx.js';

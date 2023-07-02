@@ -1,6 +1,6 @@
 import { ConfirmedSignatureInfo, PublicKey } from '@solana/web3.js';
 import { expect } from 'chai';
-import { Poseidon, ReprScalar } from 'elusiv-cryptojs';
+import { Poseidon, ReprScalar } from '@elusiv/cryptojs';
 import { DEFAULT_FETCH_BATCH_SIZE } from '../../src/constants.js';
 import { RVKWrapper } from '../../src/sdk/clientCrypto/RVKWrapper.js';
 import { ElusivTransaction } from '../../src/sdk/transactions/ElusivTransaction.js';

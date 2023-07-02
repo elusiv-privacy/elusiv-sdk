@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { PublicKey, SystemProgram } from '@solana/web3.js';
 import { expect } from 'chai';
-import { padLE } from 'elusiv-serialization';
+import { padLE } from '@elusiv/serialization';
 import { EncryptedValue } from '../../../src/sdk/clientCrypto/encryption.js';
 import { SeedWrapper } from '../../../src/sdk/clientCrypto/SeedWrapper.js';
 import { FinalizeVerificationInstruction } from '../../../src/sdk/transactions/instructions/FinalizeVerificationInstruction.js';

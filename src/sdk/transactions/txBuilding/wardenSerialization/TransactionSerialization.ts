@@ -11,7 +11,7 @@ import {
     areEqualArrs,
     bigIntToNumber,
     bigIntToUint8ArrLE, padLE, serializeUintLE, TOO_LARGE_SIZE, zeros,
-} from 'elusiv-serialization';
+} from '@elusiv/serialization';
 import { Fee, getComputationFeeTotal } from '../../../../public/Fee.js';
 import { bs58ToBytes, bytesToBs58 } from '../../../utils/base58Utils.js';
 import { utf8ByteCodesToString } from '../../../utils/stringUtils.js';

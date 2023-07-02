@@ -1,6 +1,6 @@
 // import { Keypair, PublicKey } from '@solana/web3.js';
 // import { expect } from 'chai';
-// import { IncompleteCommitment, Poseidon } from 'elusiv-cryptojs';
+// import { IncompleteCommitment, Poseidon } from '@elusiv/cryptojs';
 // import { SeedWrapper } from '../../src/sdk/clientCrypto/SeedWrapper.js';
 // import { FeeVersionData } from '../../src/sdk/paramManagers/fee/FeeManager.js';
 // import { getNumberFromTokenType } from '../../src/public/tokenTypes/TokenTypeFuncs.js';

@@ -3,8 +3,8 @@ import {
     ConfirmedSignatureInfo,
     Connection, PublicKey, SystemProgram,
 } from '@solana/web3.js';
-import { Poseidon } from 'elusiv-cryptojs';
-import { bigIntToNumber, uint8ArrayToHex } from 'elusiv-serialization';
+import { Poseidon } from '@elusiv/cryptojs';
+import { bigIntToNumber, uint8ArrayToHex } from '@elusiv/serialization';
 import { getMinimumBalanceForRentExemptAccount } from '@solana/spl-token';
 import { CommitmentManager } from '../sdk/paramManagers/CommitmentManager.js';
 import { FeeManager } from '../sdk/paramManagers/fee/FeeManager.js';

@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { field, vec } from '@dao-xyz/borsh';
-import { areEqualArrs, bigIntToNumber } from 'elusiv-serialization';
+import { areEqualArrs, bigIntToNumber } from '@elusiv/serialization';
 import { TransactionSerialization } from '../../../wardenSerialization/TransactionSerialization.js';
 import {
     U256Serialized,

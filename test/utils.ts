@@ -1,6 +1,6 @@
 import {
     Commitment, IncompleteCommitment, MerkleTree, Poseidon,
-} from 'elusiv-cryptojs';
+} from '@elusiv/cryptojs';
 import {
     Message,
     MessageCompiledInstruction, ParsedInnerInstruction, ParsedMessage, ParsedMessageAccount, ParsedTransactionWithMeta, PartiallyDecodedInstruction, PublicKey, TransactionError,
@@ -64,5 +64,18 @@ export function msgCompiledIxToPartiallyDecodedInstruction(ix: MessageCompiledIn
         programId: keys[ix.programIdIndex],
         accounts: ix.accountKeyIndexes.map((i) => keys[i]),
         data: bytesToBs58(ix.data),
+    };
+}
+
+// As the name implies, this is not cryptographically secure randomness, only used for testing
+export function seededRandomUNSAFE(seed: number): () => number {
+    // eslint-disable-next-line func-names
+    return function (): number {
+        // eslint-disable-next-line no-param-reassign
+        seed += 0x6D2B79F5;
+        let t = seed;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
     };
 }

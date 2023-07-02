@@ -1,4 +1,4 @@
-import { equalsUint8Arr } from 'elusiv-serialization';
+import { equalsUint8Arr } from '@elusiv/serialization';
 import { ElusivTransaction } from '../transactions/ElusivTransaction.js';
 import { IndexedMultiCacher } from '../utils/caching/IndexedMultiCacher.js';
 import { TokenType } from '../../public/tokenTypes/TokenType.js';

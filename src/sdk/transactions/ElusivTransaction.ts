@@ -1,5 +1,5 @@
 import { ConfirmedSignatureInfo, PublicKey } from '@solana/web3.js';
-import { ReprScalar } from 'elusiv-cryptojs';
+import { ReprScalar } from '@elusiv/cryptojs';
 import { TransactionStatus } from '../../public/TransactionStatus.js';
 import { TxTypes } from '../../public/TxTypes.js';
 import { TokenType } from '../../public/tokenTypes/TokenType.js';

@@ -1,19 +1,19 @@
 {
     "name": "@elusiv/sdk",
     "version": "0.1.16",
-    "main": "index.esm.js",
-    "module": "index.esm.js",
+    "main": "index.mjs",
+    "module": "index.mjs",
     "types": "index.d.ts",
     "type": "module",
     "files": [
-        "index.cjs.js",
-        "index.esm.js",
+        "index.cjs",
+        "index.mjs",
         "index.d.ts"
     ],
     "exports": [
         {
-            "import": "./index.esm.js",
-            "require": "./index.cjs.js"
+            "import": "./index.mjs",
+            "require": "./index.cjs"
         }
     ],
     "engines": {

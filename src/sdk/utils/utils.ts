@@ -1,4 +1,4 @@
-import { deserializeUint32LE } from 'elusiv-serialization';
+import { deserializeUint32LE } from '@elusiv/serialization';
 import { randomBytes } from '@noble/hashes/utils';
 import { Pair } from './Pair.js';
 

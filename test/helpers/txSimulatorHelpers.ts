@@ -2,7 +2,7 @@ import {
     ConfirmedSignatureInfo, LAMPORTS_PER_SOL, ParsedInnerInstruction, ParsedInstruction, PublicKey, SystemProgram,
     Transaction, TransactionBlockhashCtor, TransactionInstruction,
 } from '@solana/web3.js';
-import { ReprScalar, seededRandomUNSAFE } from 'elusiv-cryptojs';
+import { ReprScalar } from '@elusiv/cryptojs';
 import { EncryptedValue } from '../../src/sdk/clientCrypto/encryption.js';
 import { SeedWrapper } from '../../src/sdk/clientCrypto/SeedWrapper.js';
 import { MAX_MT_COUNT } from '../../src/constants.js';
@@ -21,6 +21,7 @@ import { getElusivProgramId } from '../../src/public/WardenInfo.js';
 import { Fee, OptionalFee } from '../../src/public/Fee.js';
 import { CommitmentMetadata } from '../../src/sdk/clientCrypto/CommitmentMetadata.js';
 import { getTokenInfo } from '../../src/public/tokenTypes/TokenTypeFuncs.js';
+import { seededRandomUNSAFE } from '../utils.js';
 
 // These are all irrelevant for the client, so no need to test diff vals
 const DEFAULT_FEE_PAYER: PublicKey = new PublicKey('2ZtaNYfxgMsLdDpDqnmwXsG8VyUgvxueXkZzABYWmowk');

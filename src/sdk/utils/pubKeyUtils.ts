@@ -2,7 +2,7 @@ import {
     getAccount, TokenAccountNotFoundError, TokenInvalidAccountOwnerError,
 } from '@solana/spl-token';
 import { Cluster, Connection, PublicKey } from '@solana/web3.js';
-import { bytesToBigIntLE } from 'elusiv-serialization';
+import { bytesToBigIntLE } from '@elusiv/serialization';
 import { getAssociatedTokenAcc } from '../../public/tokenTypes/TokenTypeFuncs.js';
 import { TokenType } from '../../public/tokenTypes/TokenType.js';
 

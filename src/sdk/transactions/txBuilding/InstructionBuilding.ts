@@ -1,7 +1,7 @@
 import {
     Cluster, ComputeBudgetProgram, PublicKey, TransactionInstruction,
 } from '@solana/web3.js';
-import { IncompleteCommitment, Poseidon, ReprScalar } from 'elusiv-cryptojs';
+import { IncompleteCommitment, Poseidon, ReprScalar } from '@elusiv/cryptojs';
 import { SeedWrapper } from '../../clientCrypto/SeedWrapper.js';
 import { getNumberFromTokenType } from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { ComputeHashInstruction } from '../instructions/ComputeHashInstruction.js';

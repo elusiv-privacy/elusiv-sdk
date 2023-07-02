@@ -1,8 +1,8 @@
 import { Cluster, Connection } from '@solana/web3.js';
 import {
     MontScalar, Poseidon, ReprScalar,
-} from 'elusiv-cryptojs';
-import { equalsUint8Arr, zeros } from 'elusiv-serialization';
+} from '@elusiv/cryptojs';
+import { equalsUint8Arr, zeros } from '@elusiv/serialization';
 import { StorageAccountReader } from '../accountReaders/StorageAccountReader.js';
 import { COULD_NOT_FIND_COMMITMENT, INVALID_SIZE } from '../../constants.js';
 import { IndexConverter, LocalIndex, localIndexToString } from '../utils/IndexConverter.js';
@@ -10,8 +10,8 @@ import { Pair } from '../utils/Pair.js';
 import { GeneralSet } from '../utils/GeneralSet.js';
 
 export type CommitmentInfo = {
-    index : number,
-    opening : bigint[],
+    index: number,
+    opening: bigint[],
     root: bigint,
 }
 
@@ -22,7 +22,7 @@ export class TreeManager {
         this.storageReader = storageReader;
     }
 
-    public static createTreeManager(connection: Connection, cluster : Cluster): TreeManager {
+    public static createTreeManager(connection: Connection, cluster: Cluster): TreeManager {
         const storageReader = new StorageAccountReader(connection, cluster);
         return new TreeManager(storageReader);
     }
@@ -45,7 +45,7 @@ export class TreeManager {
         const commitmentIndices = await this.getCommitmentIndices(commitments.map((c) => ({ fst: c.fst, snd: IndexConverter.leafIndexToLocalIndex(c.snd) })));
         const ops = await this.getOpenings(commitmentIndices);
         if (ops.openings.length !== commitmentIndices.length && commitmentIndices.length !== commitments.length) throw new Error(INVALID_SIZE('commIndices', commitmentIndices.length, commitments.length));
-        const res : CommitmentInfo[] = [];
+        const res: CommitmentInfo[] = [];
         for (let i = 0; i < commitments.length; i++) {
             res[i] = {
                 index: commitmentIndices[i].index,
@@ -58,12 +58,12 @@ export class TreeManager {
     }
 
     public async hasCommitment(commitmentHash: ReprScalar, leafStartPointer: number): Promise<boolean> {
-        const startPointer : LocalIndex = IndexConverter.leafIndexToLocalIndex(leafStartPointer);
-        let commitmentIndex : LocalIndex;
+        const startPointer: LocalIndex = IndexConverter.leafIndexToLocalIndex(leafStartPointer);
+        let commitmentIndex: LocalIndex;
         try {
             commitmentIndex = (await this.getCommitmentIndices([{ fst: commitmentHash, snd: startPointer }]))[0];
         }
-        catch (e : unknown) {
+        catch (e: unknown) {
             if (e instanceof Error) {
                 return false;
             }
@@ -77,7 +77,7 @@ export class TreeManager {
     // First, it fetches the account index in which chunk their startindex is. The reason we do this in one place instead of async is that often times
     // commitments have their startindex in the same chunk and this avoids fetching the same chunk multiple times
     private async getCommitmentIndices(commitments: Pair<ReprScalar, LocalIndex>[]): Promise<LocalIndex[]> {
-        const commsMont : Pair<MontScalar, LocalIndex>[] = commitments.map((c) => ({ fst: Poseidon.getPoseidon().reprToMont(c.fst), snd: c.snd }));
+        const commsMont: Pair<MontScalar, LocalIndex>[] = commitments.map((c) => ({ fst: Poseidon.getPoseidon().reprToMont(c.fst), snd: c.snd }));
         const globalIndices = (await this.storageReader.findCommitmentIndicesFromStartIndex(commsMont)).indices;
 
         return commsMont.map((c) => {
@@ -90,15 +90,15 @@ export class TreeManager {
     private async getOpenings(leafIndices: readonly LocalIndex[]): Promise<{ openings: bigint[][], root: bigint }> {
         // Get indices of commitments we need to fetch (height - 1 because we're 0 indexed)
         const openingIndices: readonly (readonly LocalIndex[])[] = leafIndices.map((li) => this.getOpeningIndices(li));
-        const allIndices : readonly LocalIndex[] = openingIndices.reduce((pO, o) => pO.concat(o), []);
+        const allIndices: readonly LocalIndex[] = openingIndices.reduce((pO, o) => pO.concat(o), []);
         // We add the _ in between to avoid having e.g. 91,9 and 9,19 being mapped to the same values
-        const indicesSet = new GeneralSet((l : LocalIndex) => `${l.index.toString()}_${l.level.toString()}`);
+        const indicesSet = new GeneralSet((l: LocalIndex) => `${l.index.toString()}_${l.level.toString()}`);
         indicesSet.addArr(allIndices);
         const uniqueIndices = indicesSet.toArray();
         // First value is in layer openingIndices.length, last value is in layer 1
         const res = await this.storageReader.getCommitmentsAtLocalIndices(uniqueIndices);
         const openingBytes = res.commitments;
-        const openings : bigint[][] = [];
+        const openings: bigint[][] = [];
 
         openingIndices.forEach((opening, cIndex) => {
             openings[cIndex] = opening.map((oIndex) => {
@@ -117,7 +117,7 @@ export class TreeManager {
         return this.getOpeningIndicesInner(index.index, index.level);
     }
 
-    private getOpeningIndicesInner(index : number, layer : number) : LocalIndex[] {
+    private getOpeningIndicesInner(index: number, layer: number): LocalIndex[] {
         if (layer <= 0) {
             return [];
         }
@@ -147,7 +147,7 @@ export class TreeManager {
 
     private static getDefault(level: number): ReprScalar {
         // In Montgomery form
-        const defaultValues : MontScalar[] = [
+        const defaultValues: MontScalar[] = [
             Uint8Array.from([215, 208, 169, 37, 21, 214, 245, 126, 221, 48, 194, 233, 207, 177, 29, 18, 85, 167, 242, 130, 212, 71, 7, 78, 114, 10, 173, 101, 60, 84, 109, 9]),
             Uint8Array.from([68, 89, 173, 222, 230, 170, 252, 78, 231, 34, 126, 164, 43, 187, 137, 244, 131, 254, 238, 133, 35, 169, 175, 160, 145, 110, 94, 131, 102, 137, 115, 40]),
             Uint8Array.from([51, 251, 186, 127, 55, 143, 98, 20, 22, 65, 243, 34, 243, 240, 93, 64, 22, 16, 89, 136, 58, 238, 219, 189, 137, 240, 147, 136, 227, 199, 8, 18]),

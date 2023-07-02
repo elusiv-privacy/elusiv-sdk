@@ -1,7 +1,7 @@
 import {
     Cluster, ParsedInnerInstruction, ParsedInstruction, PartiallyDecodedInstruction, PublicKey,
 } from '@solana/web3.js';
-import { INVALID_SIZE } from 'elusiv-serialization';
+import { INVALID_SIZE } from '@elusiv/serialization';
 import {
     COMPUTE_COMM_HASH_IX_CODE, FAILED_TO_PARSE, FINALIZE_VERIFICATION_IX_CODE, INIT_VERIFICATION_IX_CODE, STORE_BASE_COMM_IX_CODE,
 } from '../../../constants.js';

@@ -1,4 +1,4 @@
-import { ReprScalar } from 'elusiv-cryptojs';
+import { ReprScalar } from '@elusiv/cryptojs';
 import { Fee, getTotalFeeAmount } from '../Fee.js';
 import { TxTypes } from '../TxTypes.js';
 import { WardenInfo } from '../WardenInfo.js';

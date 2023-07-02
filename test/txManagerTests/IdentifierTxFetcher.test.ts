@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ConfirmedSignatureInfo, PublicKey, TransactionError } from '@solana/web3.js';
-import { Poseidon, ReprScalar } from 'elusiv-cryptojs';
-import { INVALID_SIZE } from 'elusiv-serialization';
+import { Poseidon, ReprScalar } from '@elusiv/cryptojs';
+import { INVALID_SIZE } from '@elusiv/serialization';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { SeedWrapper } from '../../src/sdk/clientCrypto/SeedWrapper.js';

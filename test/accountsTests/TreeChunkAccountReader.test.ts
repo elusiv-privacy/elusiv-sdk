@@ -1,5 +1,5 @@
 import { Connection, PublicKey } from '@solana/web3.js';
-import { zeros } from 'elusiv-serialization';
+import { zeros } from '@elusiv/serialization';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { serialize } from '@dao-xyz/borsh';
@@ -14,12 +14,12 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 
 describe('Tree Chunk Acc parsing tests', () => {
-    let reader : TreeChunkAccountReader;
-    let key : PublicKey;
-    let commitmentData : Uint8Array;
+    let reader: TreeChunkAccountReader;
+    let key: PublicKey;
+    let commitmentData: Uint8Array;
 
     before(() => {
-        const commitmentDataArray : number[] = [];
+        const commitmentDataArray: number[] = [];
         for (let i = 0; i < 32 * STORAGE_MT_VALUES_PER_ACCOUNT; i++) {
             commitmentDataArray[i] = i;
         }

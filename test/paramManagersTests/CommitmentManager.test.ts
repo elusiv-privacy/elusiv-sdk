@@ -2,7 +2,7 @@
 // import { expect } from 'chai';
 // import {
 //     IncompleteCommitment, MerkleTree, Poseidon, seededRandomUNSAFE,
-// } from 'elusiv-cryptojs';
+// } from '@elusiv/cryptojs';
 // import { CommitmentManager } from '../../src/paramManagers/CommitmentManager.js';
 // import { TreeManager } from '../../src/paramManagers/TreeManager.js';
 // import { getNumberFromTokenType, TokenType } from '../../src/public/tokenTypes/TokenTypeFuncs.js';

@@ -2,7 +2,7 @@ import { deserialize, serialize } from '@dao-xyz/borsh';
 import {
     AccountMeta, Cluster, PartiallyDecodedInstruction, TransactionInstruction,
 } from '@solana/web3.js';
-import { equalsUint8Arr } from 'elusiv-serialization';
+import { equalsUint8Arr } from '@elusiv/serialization';
 import { AccountReader } from '../../accountReaders/AccountReader.js';
 import {
     BASE_COMMITMENT_HASH_ACC_SEED,

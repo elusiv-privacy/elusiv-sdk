@@ -3,8 +3,8 @@ import {
 } from '@solana/web3.js';
 import {
     Commitment, IncompleteCommitment, Poseidon, ReprScalar,
-} from 'elusiv-cryptojs';
-import { bigIntToNumber, bytesToBigIntLE } from 'elusiv-serialization';
+} from '@elusiv/cryptojs';
+import { bigIntToNumber, bytesToBigIntLE } from '@elusiv/serialization';
 import {
     generateMergeProof, generateMergeProofInputsNoAmountNoNextCommitment, generateSendQuadraProof, generateSendQuadraProofInputsNoAmountNoNextCommitment, IncompleteSendQuadraProofInputs, ProofParams,
 } from 'elusiv-circuits';

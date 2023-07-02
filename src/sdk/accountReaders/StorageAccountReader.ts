@@ -6,8 +6,8 @@
 // root is level 0, leaves are level 20 -> index is 256 bit value
 
 import { Cluster, Connection, PublicKey } from '@solana/web3.js';
-import { MontScalar } from 'elusiv-cryptojs';
-import { equalsUint8Arr, zeros } from 'elusiv-serialization';
+import { MontScalar } from '@elusiv/cryptojs';
+import { equalsUint8Arr, zeros } from '@elusiv/serialization';
 import {
     COULD_NOT_FETCH_DATA,
     INVALID_READ, MERKLE_TREE_HEIGHT, STORAGE_ACC_SEED, STORAGE_MT_CHUNK_COUNT,
@@ -25,9 +25,9 @@ import { AccountReader } from './AccountReader.js';
 import { TreeChunkAccountReader } from './TreeChunkAccountReader.js';
 
 export class StorageAccountReader extends AccountReader {
-    private cluster : Cluster;
+    private cluster: Cluster;
 
-    public constructor(connection: Connection, cluster : Cluster) {
+    public constructor(connection: Connection, cluster: Cluster) {
         super(connection);
         this.cluster = cluster;
     }
@@ -58,7 +58,7 @@ export class StorageAccountReader extends AccountReader {
             comms.map((p) => ({ fst: p.fst, snd: IndexConverter.localIndexToAccIndex(p.snd) })),
         );
 
-        const fetchedCommIndices : Promise<Map<MontScalar, GlobalIndex>>[] = [];
+        const fetchedCommIndices: Promise<Map<MontScalar, GlobalIndex>>[] = [];
         for (const accIndex of groupedByAccs.keys()) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             fetchedCommIndices.push(StorageAccountReader.findCommitmentIndicesAcrossChunks(groupedByAccs.get(accIndex)!, treeChunkReader, storageData));
@@ -68,7 +68,7 @@ export class StorageAccountReader extends AccountReader {
     }
 
     private static async findCommitmentIndicesAcrossChunks(comms: readonly Pair<MontScalar, AccIndex>[], treeChunkReader: TreeChunkAccountReader, storageAcc: StorageAccBorsh): Promise<Map<MontScalar, GlobalIndex>> {
-        const res : Map<MontScalar, GlobalIndex> = new Map();
+        const res: Map<MontScalar, GlobalIndex> = new Map();
         if (comms.length === 0) return res;
 
         // These *should* always have the same account. In case they don't, we start at the lowest one to
@@ -98,7 +98,7 @@ export class StorageAccountReader extends AccountReader {
 
     // Checks one chunk for n commitments. Returns array of index|undefined, where index means the nth commitment was found there.
     // Pait<Commhash, startindex>
-    private static findCommitmentIndicesInChunk(chunk: Uint8Array, commHashes: readonly MontScalar[], startIndices : number[]): (number | undefined)[] {
+    private static findCommitmentIndicesInChunk(chunk: Uint8Array, commHashes: readonly MontScalar[], startIndices: number[]): (number | undefined)[] {
         const zeroCommitment = zeros(32);
         const sortedStartIndices = startIndices.sort();
         // TODO: Replace this with a map?
@@ -163,7 +163,7 @@ export class StorageAccountReader extends AccountReader {
             treeChunkReader,
         );
 
-        const res : Map<string, MontScalar> = new Map();
+        const res: Map<string, MontScalar> = new Map();
 
         const commitmentsToFetch: Promise<void>[] = [];
         const rootPromise: Promise<MontScalar> = this.getRoot(storageData);
@@ -206,7 +206,7 @@ export class StorageAccountReader extends AccountReader {
     }
 
     private static getChunksFromIndices(accIndices: number[], storageAcc: StorageAccBorsh, treeChunkReader: TreeChunkAccountReader): Promise<Uint8Array>[] {
-        const res : Promise<Uint8Array>[] = [];
+        const res: Promise<Uint8Array>[] = [];
         accIndices.forEach((i) => {
             res[i] = StorageAccountReader.getChunkFromIndex(i, storageAcc, treeChunkReader);
         });

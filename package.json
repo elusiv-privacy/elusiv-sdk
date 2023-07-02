@@ -44,9 +44,9 @@
         "@solana/web3.js": "^1.75.0",
         "aes-js": "^3.1.2",
         "bs58": "^5.0.0",
-        "elusiv-circuits": "git@github.com:elusiv-privacy/circuits.git#nico-metadata-optional-fee",
-        "elusiv-cryptojs": "git@github.com:elusiv-privacy/elusiv-cryptojs.git",
-        "elusiv-serialization": "git@github.com:elusiv-privacy/serialization.js.git",
+        "elusiv-circuits": "git@github.com:elusiv-privacy/circuits.git",
+        "@elusiv/cryptojs": "^1.0.1",
+        "@elusiv/serialization": "^1.0.1",
         "node-fetch": "^3.3.1"
     },
     "devDependencies": {

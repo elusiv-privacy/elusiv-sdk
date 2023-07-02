@@ -2,8 +2,8 @@ import { deserialize, serialize } from '@dao-xyz/borsh';
 import {
     Cluster, PartiallyDecodedInstruction, PublicKey, TransactionInstruction,
 } from '@solana/web3.js';
-import { ReprScalar } from 'elusiv-cryptojs';
-import { deserializeUint256LE, serializeUint256LE } from 'elusiv-serialization';
+import { ReprScalar } from '@elusiv/cryptojs';
+import { deserializeUint256LE, serializeUint256LE } from '@elusiv/serialization';
 import { AccountReader } from '../../accountReaders/AccountReader.js';
 import { BASE_COMMITMENT_HASH_ACC_SEED, STORE_BASE_COMM_IX_CODE } from '../../../constants.js';
 import { getNumberFromTokenType } from '../../../public/tokenTypes/TokenTypeFuncs.js';

@@ -1,4 +1,4 @@
-import { Commitment, IncompleteCommitment } from 'elusiv-cryptojs';
+import { Commitment, IncompleteCommitment } from '@elusiv/cryptojs';
 
 export class GeneralSet<T> {
     private map: Map<string, T>;

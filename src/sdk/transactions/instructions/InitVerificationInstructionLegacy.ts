@@ -11,8 +11,8 @@
 
 import { deserialize, serialize } from '@dao-xyz/borsh';
 import { PartiallyDecodedInstruction } from '@solana/web3.js';
-import { ReprScalar } from 'elusiv-cryptojs';
-import { deserializeUint256LE, serializeUint256LE } from 'elusiv-serialization';
+import { ReprScalar } from '@elusiv/cryptojs';
+import { deserializeUint256LE, serializeUint256LE } from '@elusiv/serialization';
 import { INIT_VERIFICATION_IX_CODE, MAX_MT_COUNT, SEND_PUBLIC_INPUT_IX_CODE } from '../../../constants.js';
 import { getNumberFromTokenType, getTokenType } from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { InitVerificationInstructionBorshLegacy } from '../txBuilding/serializedTypes/borshTypes/legacy/InitVerificationInstructionBorshLegacy.js';

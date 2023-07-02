@@ -2,8 +2,8 @@ import { MessageCompiledInstruction, PublicKey, SignaturePubkeyPair } from '@sol
 import { expect } from 'chai';
 import { SendQuadraPublicInputs, SendQuadraProof, COMMITMENT_METADATA_LENGTH } from 'elusiv-circuits';
 import { Groth16Proof, ProofPointG1, ProofPointG2 } from 'elusiv-circuits/dist/proofGeneration';
-import { MontScalar } from 'elusiv-cryptojs';
-import { bigIntToUint8ArrLE, padLE, zeros } from 'elusiv-serialization';
+import { MontScalar } from '@elusiv/cryptojs';
+import { bigIntToUint8ArrLE, padLE, zeros } from '@elusiv/serialization';
 import { Fee } from '../../../src/public/Fee.js';
 import { JoinSplitSerializedJSON } from '../../../src/sdk/transactions/txBuilding/serializedTypes/borshTypes/JoinSplitBorsh.js';
 import { SendPublicInputsSerializedJSON } from '../../../src/sdk/transactions/txBuilding/serializedTypes/borshTypes/SendPublicInputsBorsh.js';

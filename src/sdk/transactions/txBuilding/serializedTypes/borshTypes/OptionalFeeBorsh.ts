@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { field, fixedArray } from '@dao-xyz/borsh';
-import { bigIntToNumber } from 'elusiv-serialization';
+import { bigIntToNumber } from '@elusiv/serialization';
 import { TransactionSerialization } from '../../wardenSerialization/TransactionSerialization.js';
 import {
     U256Serialized,

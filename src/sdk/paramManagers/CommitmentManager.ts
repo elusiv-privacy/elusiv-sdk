@@ -1,7 +1,7 @@
 import {
     Commitment, IncompleteCommitment, Poseidon, ReprScalar,
-} from 'elusiv-cryptojs';
-import { equalsUint8Arr } from 'elusiv-serialization';
+} from '@elusiv/cryptojs';
+import { equalsUint8Arr } from '@elusiv/serialization';
 import { PartialSendTx, SendTx } from '../transactions/SendTx.js';
 import { PartialStoreTx } from '../transactions/StoreTx.js';
 import { TreeManager } from './TreeManager.js';

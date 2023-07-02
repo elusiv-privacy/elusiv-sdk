@@ -1,7 +1,7 @@
 import { Keypair } from '@solana/web3.js';
 import { hkdf } from '@noble/hashes/hkdf';
 import { sha256 } from '@noble/hashes/sha256';
-import { padLE, serializeUint32LE } from 'elusiv-serialization';
+import { padLE, serializeUint32LE } from '@elusiv/serialization';
 import { MAX_UINT32 } from '../../constants.js';
 
 /**

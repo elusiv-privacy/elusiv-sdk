@@ -2,8 +2,7 @@ import { Cluster, Connection, PublicKey } from '@solana/web3.js';
 import {
     getAssociatedTokenAddress, getMinimumBalanceForRentExemptAccount, getAccount, TokenInvalidAccountOwnerError, TokenAccountNotFoundError,
 } from '@solana/spl-token';
-import { PriceStatus, PythHttpClient } from '@pythnetwork/client';
-import { getPythProgramKeyForCluster } from '@pythnetwork/client/lib/cluster.js';
+import { PriceStatus, PythHttpClient, getPythProgramKeyForCluster } from '@pythnetwork/client';
 import { getDenomination, getMintAccount, getPythPriceAcc } from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { BasicFee, Fee } from '../../../public/Fee.js';
 import { sleep, zipSameLength } from '../../utils/utils.js';

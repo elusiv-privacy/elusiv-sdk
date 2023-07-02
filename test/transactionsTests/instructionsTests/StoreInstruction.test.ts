@@ -1,6 +1,6 @@
 import { PublicKey, SystemProgram } from '@solana/web3.js';
 import { expect } from 'chai';
-import { ReprScalar } from 'elusiv-cryptojs';
+import { ReprScalar } from '@elusiv/cryptojs';
 import { SeedWrapper } from '../../../src/sdk/clientCrypto/SeedWrapper.js';
 import { StoreInstruction } from '../../../src/sdk/transactions/instructions/StoreInstruction.js';
 import { getElusivProgramId } from '../../../src/public/WardenInfo.js';

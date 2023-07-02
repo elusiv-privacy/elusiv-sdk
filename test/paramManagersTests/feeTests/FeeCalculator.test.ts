@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { IncompleteSendQuadraProofInputs } from 'elusiv-circuits';
-import { bytesToBigIntLE } from 'elusiv-serialization';
+import { bytesToBigIntLE } from '@elusiv/serialization';
 import { getComputationFeeTotal } from '../../../src/public/Fee.js';
 import { FeeCalculator } from '../../../src/sdk/paramManagers/fee/FeeCalculator.js';
 import { FeeAccBorsh } from '../../../src/sdk/transactions/txBuilding/serializedTypes/borshTypes/accounts/FeeAccBorsh.js';

@@ -3,7 +3,7 @@ import {
 } from '@solana/web3.js';
 import {
     Commitment, IncompleteCommitment,
-} from 'elusiv-cryptojs';
+} from '@elusiv/cryptojs';
 import { SendQuadraProof } from 'elusiv-circuits';
 import { ElusivTransaction } from './ElusivTransaction.js';
 import { GeneralSet } from '../utils/GeneralSet.js';

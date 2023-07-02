@@ -1,7 +1,7 @@
 import {
     MerkleTree, Poseidon, ReprScalar,
-} from 'elusiv-cryptojs';
-import { bigIntToNumber, serializeUint256LE } from 'elusiv-serialization';
+} from '@elusiv/cryptojs';
+import { bigIntToNumber, serializeUint256LE } from '@elusiv/serialization';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { StorageAccountReaderDriver } from '../helpers/drivers/StorageAccountReaderDriver.js';
@@ -69,7 +69,7 @@ describe('Tree Manager tests', () => {
     [1, 10, 100, 1000, 10_000].forEach((offset) => {
         commitmentsToFetch.forEach((comm) => {
             describe(`Correctly fetches commitment info for ${comm} with offset ${offset}`, () => {
-                let commitmentInfo : CommitmentInfo;
+                let commitmentInfo: CommitmentInfo;
                 before(async () => {
                     const serialized = Poseidon.getPoseidon().hashBigIntToBytesLE(comm);
                     commitmentInfo = (await treeManager.getCommitmentsInfo([{ fst: serialized, snd: bigIntToNumber(comm) - offset }]))[0];
@@ -101,7 +101,7 @@ describe('Tree Manager tests', () => {
 
     [[1, 2, 10, 1000], [2, 1, 1000, 10], [1000, 10, 1]].forEach((comms) => {
         describe(`Fetching info for multiple commitments at once: ${comms}`, () => {
-            let commInfos : CommitmentInfo[];
+            let commInfos: CommitmentInfo[];
             before(async () => {
                 const commPairs = zipSameLength(comms.map((c) => Poseidon.getPoseidon().hashBigIntToBytesLE(BigInt(c))), comms.map((c) => Math.max(0, c - 2)));
                 commInfos = await treeManager.getCommitmentsInfo(commPairs);

@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { field, fixedArray, vec } from '@dao-xyz/borsh';
 import { COMMITMENT_METADATA_LENGTH } from 'elusiv-circuits';
-import { areEqualArrs, bigIntToNumber } from 'elusiv-serialization';
+import { areEqualArrs, bigIntToNumber } from '@elusiv/serialization';
 import { TransactionSerialization } from '../../wardenSerialization/TransactionSerialization.js';
 import {
     CommitmentMetadataSerialized,

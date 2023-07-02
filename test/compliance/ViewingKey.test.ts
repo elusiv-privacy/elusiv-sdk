@@ -4,8 +4,8 @@ import {
 } from '@solana/web3.js';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { uint8ArrayToHex } from 'elusiv-serialization/dist/serializationUtils';
-import { ReprScalar } from 'elusiv-cryptojs';
+import { uint8ArrayToHex } from '@elusiv/serialization';
+import { ReprScalar } from '@elusiv/cryptojs';
 import { COMMITMENT_METADATA_LENGTH } from 'elusiv-circuits';
 import { SeedWrapper } from '../../src/sdk/clientCrypto/SeedWrapper';
 import { generateViewingKey, getSendTxWithViewingKey } from '../../src/compliance/ViewingKey';

@@ -4,7 +4,7 @@ import {
     deserializeUint256LE,
     serializeUint256LE,
     padLE,
-} from 'elusiv-serialization';
+} from '@elusiv/serialization';
 import { getNumberFromTokenType, getTokenType } from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { decryptAES256CTRWithKey, EncryptedValue } from '../../clientCrypto/encryption.js';
 import { RVKWrapper } from '../../clientCrypto/RVKWrapper.js';

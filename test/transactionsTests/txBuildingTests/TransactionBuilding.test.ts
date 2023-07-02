@@ -4,8 +4,8 @@ import {
 import { verifySendQuadraProof } from 'elusiv-circuits/dist/proofVerification';
 import {
     IncompleteCommitment, Poseidon,
-} from 'elusiv-cryptojs';
-import { bigIntToNumber } from 'elusiv-serialization';
+} from '@elusiv/cryptojs';
+import { bigIntToNumber } from '@elusiv/serialization';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { getSendQuadraProofParamsStatic } from 'elusiv-circuits';

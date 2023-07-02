@@ -2,7 +2,7 @@
 // https://github.com/elusiv-privacy/elusiv/blob/master/elusiv/src/commitment.rs
 
 import { IncompleteSendQuadraProofInputs } from 'elusiv-circuits';
-import { bigIntToNumber, serializeUint256LE } from 'elusiv-serialization';
+import { bigIntToNumber, serializeUint256LE } from '@elusiv/serialization';
 import {
     ADD_COST,
     ADD_MIXED_COST,

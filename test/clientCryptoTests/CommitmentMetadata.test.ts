@@ -1,13 +1,13 @@
 import { expect } from 'chai';
-import { mergeUint8 } from 'elusiv-serialization';
+import { concatBytes } from '@elusiv/serialization';
 import { COMMITMENT_METADATA_LENGTH } from 'elusiv-circuits';
-import { seededRandomUNSAFE } from 'elusiv-cryptojs';
 import { getTokenType } from '../../src/public/tokenTypes/TokenTypeFuncs.js';
 import { CommitmentMetadata } from '../../src/sdk/clientCrypto/CommitmentMetadata.js';
 import { MAX_UINT20, MAX_UINT32, MAX_UINT64 } from '../../src/constants.js';
 import { encryptAES256CTRWithKey } from '../../src/sdk/clientCrypto/encryption.js';
 import { RVKWrapper } from '../../src/sdk/clientCrypto/RVKWrapper.js';
 import { generateCommMetadataKey } from '../../src/sdk/clientCrypto/keyDerivation.js';
+import { seededRandomUNSAFE } from '../utils.js';
 
 describe('Commitmentment metadata tests', () => {
     let seed: Uint8Array;
@@ -136,7 +136,7 @@ describe('Commitmentment metadata tests', () => {
         const bytes = metadata.toBytes();
 
         expect(() => CommitmentMetadata.fromBytes(bytes.slice(0, bytes.length - 1))).to.throw('Invalid length for metadata');
-        expect(() => CommitmentMetadata.fromBytes(mergeUint8([bytes, new Uint8Array([42])]))).to.throw('Invalid length for metadata');
+        expect(() => CommitmentMetadata.fromBytes(concatBytes([bytes, new Uint8Array([42])]))).to.throw('Invalid length for metadata');
     });
 
     it('Ensure the commitment metadata length is correct', () => {

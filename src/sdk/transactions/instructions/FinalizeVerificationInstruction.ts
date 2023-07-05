@@ -5,7 +5,7 @@ import {
     serializeUint256LE,
     padLE,
 } from '@elusiv/serialization';
-import { getNumberFromTokenType, getTokenType } from '../../../public/tokenTypes/TokenTypeFuncs.js';
+import { getNumberFromTokenType, getTokenTypeFromNumber } from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { decryptAES256CTRWithKey, EncryptedValue } from '../../clientCrypto/encryption.js';
 import { RVKWrapper } from '../../clientCrypto/RVKWrapper.js';
 import { FinalizeSendDataBorsh } from '../txBuilding/serializedTypes/borshTypes/legacy/FinalizeSendDataBorsh.js';
@@ -97,7 +97,7 @@ export class FinalizeVerificationInstruction {
 
         return new FinalizeVerificationInstruction(
             parsed.data.total_amount,
-            getTokenType(parsed.data.token_id),
+            getTokenTypeFromNumber(parsed.data.token_id),
             parsed.data.mt_index,
             encryptedOwner,
             parsed.verification_account_index,

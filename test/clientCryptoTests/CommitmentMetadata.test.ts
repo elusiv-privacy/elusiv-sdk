@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { concatBytes } from '@elusiv/serialization';
 import { COMMITMENT_METADATA_LENGTH } from 'elusiv-circuits';
-import { getTokenType } from '../../src/public/tokenTypes/TokenTypeFuncs.js';
+import { getTokenTypeFromNumber } from '../../src/public/tokenTypes/TokenTypeFuncs.js';
 import { CommitmentMetadata } from '../../src/sdk/clientCrypto/CommitmentMetadata.js';
 import { MAX_UINT20, MAX_UINT32, MAX_UINT64 } from '../../src/constants.js';
 import { encryptAES256CTRWithKey } from '../../src/sdk/clientCrypto/encryption.js';
@@ -25,10 +25,10 @@ describe('Commitmentment metadata tests', () => {
         const assocCommIndex = 3;
         const balance = 4n;
 
-        const metadata = new CommitmentMetadata(nonce, getTokenType(tokenType), assocCommIndex, balance);
+        const metadata = new CommitmentMetadata(nonce, getTokenTypeFromNumber(tokenType), assocCommIndex, balance);
 
         expect(metadata.nonce).to.equal(nonce);
-        expect(metadata.tokenType).to.equal(getTokenType(tokenType));
+        expect(metadata.tokenType).to.equal(getTokenTypeFromNumber(tokenType));
         expect(metadata.assocCommIndex).to.equal(assocCommIndex);
         expect(metadata.balance).to.equal(balance);
     });
@@ -39,12 +39,12 @@ describe('Commitmentment metadata tests', () => {
         const assocCommIndex = 3;
         const balance = 4n;
 
-        const metadata = new CommitmentMetadata(nonce, getTokenType(tokenType), assocCommIndex, balance);
+        const metadata = new CommitmentMetadata(nonce, getTokenTypeFromNumber(tokenType), assocCommIndex, balance);
 
         const metadataFromBytes = CommitmentMetadata.fromBytes(metadata.toBytes());
 
         expect(metadataFromBytes.nonce).to.equal(nonce);
-        expect(metadataFromBytes.tokenType).to.equal(getTokenType(tokenType));
+        expect(metadataFromBytes.tokenType).to.equal(getTokenTypeFromNumber(tokenType));
         expect(metadataFromBytes.assocCommIndex).to.equal(assocCommIndex);
         expect(metadataFromBytes.balance).to.equal(balance);
     });
@@ -57,7 +57,7 @@ describe('Commitmentment metadata tests', () => {
 
         const rvk = new RVKWrapper(seed);
 
-        const metadata = new CommitmentMetadata(nonce, getTokenType(tokenType), assocCommIndex, balance);
+        const metadata = new CommitmentMetadata(nonce, getTokenTypeFromNumber(tokenType), assocCommIndex, balance);
 
         const encryptedMetadata = await metadata.serializeAndEncrypt(rvk, commHash);
 
@@ -68,7 +68,7 @@ describe('Commitmentment metadata tests', () => {
         const decryptedMetadata = await CommitmentMetadata.deserializeAndDecrypt(encryptedMetadata.cipherText, rvk, commHash);
 
         expect(decryptedMetadata.nonce).to.equal(nonce);
-        expect(decryptedMetadata.tokenType).to.equal(getTokenType(tokenType));
+        expect(decryptedMetadata.tokenType).to.equal(getTokenTypeFromNumber(tokenType));
         expect(decryptedMetadata.assocCommIndex).to.equal(assocCommIndex);
         expect(decryptedMetadata.balance).to.equal(balance);
     });
@@ -81,7 +81,7 @@ describe('Commitmentment metadata tests', () => {
 
         const rvk = new RVKWrapper(seed);
 
-        const metadata = new CommitmentMetadata(nonce, getTokenType(tokenType), assocCommIndex, balance);
+        const metadata = new CommitmentMetadata(nonce, getTokenTypeFromNumber(tokenType), assocCommIndex, balance);
 
         const serialized = metadata.toBytes();
         const encryptedMetadata = await encryptAES256CTRWithKey(serialized, commHash.slice(0, 16), generateCommMetadataKey(rvk.getRootViewingKey().slice(0, commHash.length - 1), commHash));
@@ -90,7 +90,7 @@ describe('Commitmentment metadata tests', () => {
             const decryptedMetadata = await CommitmentMetadata.deserializeAndDecrypt(encryptedMetadata.cipherText, rvk, commHash);
 
             expect(decryptedMetadata.nonce).to.not.equal(nonce);
-            expect(decryptedMetadata.tokenType).to.not.equal(getTokenType(tokenType));
+            expect(decryptedMetadata.tokenType).to.not.equal(getTokenTypeFromNumber(tokenType));
             expect(decryptedMetadata.assocCommIndex).to.not.equal(assocCommIndex);
             expect(decryptedMetadata.balance).to.not.equal(balance);
         }
@@ -107,7 +107,7 @@ describe('Commitmentment metadata tests', () => {
 
         const rvk = new RVKWrapper(seed);
 
-        const metadata = new CommitmentMetadata(nonce, getTokenType(tokenType), assocCommIndex, balance);
+        const metadata = new CommitmentMetadata(nonce, getTokenTypeFromNumber(tokenType), assocCommIndex, balance);
 
         const serialized = metadata.toBytes();
         const encryptedMetadata = await encryptAES256CTRWithKey(serialized, commHash.slice(0, 16), generateCommMetadataKey(rvk.getRootViewingKey(), commHash.slice(0, commHash.length - 1)));
@@ -116,7 +116,7 @@ describe('Commitmentment metadata tests', () => {
             const decryptedMetadata = await CommitmentMetadata.deserializeAndDecrypt(encryptedMetadata.cipherText, rvk, commHash);
 
             expect(decryptedMetadata.nonce).to.not.equal(nonce);
-            expect(decryptedMetadata.tokenType).to.not.equal(getTokenType(tokenType));
+            expect(decryptedMetadata.tokenType).to.not.equal(getTokenTypeFromNumber(tokenType));
             expect(decryptedMetadata.assocCommIndex).to.not.equal(assocCommIndex);
             expect(decryptedMetadata.balance).to.not.equal(balance);
         }
@@ -131,7 +131,7 @@ describe('Commitmentment metadata tests', () => {
         const assocCommIndex = 3;
         const balance = 4n;
 
-        const metadata = new CommitmentMetadata(nonce, getTokenType(tokenType), assocCommIndex, balance);
+        const metadata = new CommitmentMetadata(nonce, getTokenTypeFromNumber(tokenType), assocCommIndex, balance);
 
         const bytes = metadata.toBytes();
 
@@ -145,12 +145,12 @@ describe('Commitmentment metadata tests', () => {
     });
 
     it('Throws with out of range parameters', () => {
-        expect(() => new CommitmentMetadata(-1, getTokenType(0), 0, 0n)).to.throw('Invalid nonce');
-        expect(() => new CommitmentMetadata(MAX_UINT32 + 1, getTokenType(0), 0, 0n)).to.throw('Invalid nonce');
-        expect(() => new CommitmentMetadata(0, getTokenType(0), MAX_UINT20 + 1, 0n)).to.throw('Invalid assoc comm index');
-        expect(() => new CommitmentMetadata(0, getTokenType(0), -1, 0n)).to.throw('Invalid assoc comm index');
-        expect(() => new CommitmentMetadata(0, getTokenType(0), 0, -1n)).to.throw('Invalid amount');
-        expect(() => new CommitmentMetadata(0, getTokenType(0), 0, MAX_UINT64 + BigInt(1))).to.throw('Invalid amount');
+        expect(() => new CommitmentMetadata(-1, getTokenTypeFromNumber(0), 0, 0n)).to.throw('Invalid nonce');
+        expect(() => new CommitmentMetadata(MAX_UINT32 + 1, getTokenTypeFromNumber(0), 0, 0n)).to.throw('Invalid nonce');
+        expect(() => new CommitmentMetadata(0, getTokenTypeFromNumber(0), MAX_UINT20 + 1, 0n)).to.throw('Invalid assoc comm index');
+        expect(() => new CommitmentMetadata(0, getTokenTypeFromNumber(0), -1, 0n)).to.throw('Invalid assoc comm index');
+        expect(() => new CommitmentMetadata(0, getTokenTypeFromNumber(0), 0, -1n)).to.throw('Invalid amount');
+        expect(() => new CommitmentMetadata(0, getTokenTypeFromNumber(0), 0, MAX_UINT64 + BigInt(1))).to.throw('Invalid amount');
     });
 });
 

@@ -3,7 +3,7 @@ import { PublicKey } from '@solana/web3.js';
 import { getAssociatedTokenAddressSync } from '@solana/spl-token';
 import {
     getAssociatedTokenAcc,
-    getDenomination, getMintAccount, getNumberFromTokenType, getPythPriceAccount, getTokenInfo, getTokenType, getTokenTypeFromStr,
+    getDenomination, getMintAccount, getNumberFromTokenType, getPythPriceAccount, getTokenInfo, getTokenTypeFromNumber, getTokenTypeFromStr,
 } from '../../../src/public/tokenTypes/TokenTypeFuncs.js';
 import { tokenInfos } from '../../../src/public/tokenTypes/Token.js';
 import { TokenType } from '../../../src/public/tokenTypes/TokenType.js';
@@ -31,7 +31,7 @@ describe('Token type tests', () => {
         });
 
         it('Correctly gets the tokentype from index', () => {
-            expect(getTokenType(i)).to.equal(tokenInfo.symbol);
+            expect(getTokenTypeFromNumber(i)).to.equal(tokenInfo.symbol);
         });
 
         it('Correctly gets the tokentype from string', () => {
@@ -78,7 +78,7 @@ describe('Token type tests', () => {
     });
 
     it('Throws for getting tokentype from index for a non-existing token', () => {
-        expect(() => getTokenType(100)).to.throw();
+        expect(() => getTokenTypeFromNumber(100)).to.throw();
     });
 
     it('Throws for getting tokentype from string for a non-existing token', () => {

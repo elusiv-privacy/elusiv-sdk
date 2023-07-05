@@ -96,6 +96,11 @@ export function getTokenType(t: number): TokenType {
     return TokenTypeArr[t];
 }
 
+/**
+ * Returns the number associated with a token type as a 16 bit uint.
+ * @param t The token type to get the number of
+ * @returns The number associated with the token type
+ */
 export function getNumberFromTokenType(t: TokenType): number {
     const n = TokenTypeArr.indexOf(t);
     if (n !== -1) return n;

@@ -16,7 +16,7 @@ export {
 } from './public/transactionWrappers/TxWrappers.js';
 export { TokenType, TokenTypeArr } from './public/tokenTypes/TokenType.js';
 export {
-    airdropToken, getMintAccount, getTokenInfo, TokenInfo,
+    airdropToken, getMintAccount, getTokenInfo, TokenInfo, getNumberFromTokenType,
 } from './public/tokenTypes/TokenTypeFuncs.js';
 export { TxTypes } from './public/TxTypes.js';
 export { TransactionStatus } from './public/TransactionStatus.js';

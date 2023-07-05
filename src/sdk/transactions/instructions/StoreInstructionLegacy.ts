@@ -6,7 +6,7 @@ import { ReprScalar } from '@elusiv/cryptojs';
 import { deserializeUint256LE, serializeUint256LE } from '@elusiv/serialization';
 import { AccountReader } from '../../accountReaders/AccountReader.js';
 import { BASE_COMMITMENT_HASH_ACC_SEED, STORE_BASE_COMM_IX_CODE } from '../../../constants.js';
-import { getNumberFromTokenType, getTokenType } from '../../../public/tokenTypes/TokenTypeFuncs.js';
+import { getNumberFromTokenType, getTokenTypeFromNumber } from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { getElusivProgramId } from '../../../public/WardenInfo.js';
 import { BaseCommitmentHashRequestBorsh } from '../txBuilding/serializedTypes/borshTypes/legacy/BaseCommitmentHashRequestBorsh.js';
 import { RVKWrapper } from '../../clientCrypto/RVKWrapper.js';
@@ -55,7 +55,7 @@ export class StoreInstructionLegacy extends StoreInstructionBase {
         }
 
         return new StoreInstructionLegacy(
-            getTokenType(parsed.request.token_id),
+            getTokenTypeFromNumber(parsed.request.token_id),
             parsed.hash_account_index,
             parsed.request.amount,
             serializeUint256LE(parsed.request.base_commitment) as ReprScalar,

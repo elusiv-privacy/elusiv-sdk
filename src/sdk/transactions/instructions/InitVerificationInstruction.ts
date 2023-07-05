@@ -15,7 +15,7 @@ import { ReprScalar } from '@elusiv/cryptojs';
 import { deserializeUint256LE, serializeUint256LE } from '@elusiv/serialization';
 import { INIT_VERIFICATION_IX_CODE, MAX_MT_COUNT, SEND_PUBLIC_INPUT_IX_CODE } from '../../../constants.js';
 import { OptionalFee } from '../../../public/Fee.js';
-import { getNumberFromTokenType, getTokenType } from '../../../public/tokenTypes/TokenTypeFuncs.js';
+import { getNumberFromTokenType, getTokenTypeFromNumber } from '../../../public/tokenTypes/TokenTypeFuncs.js';
 import { CommitmentMetadata } from '../../clientCrypto/CommitmentMetadata.js';
 import { RVKWrapper } from '../../clientCrypto/RVKWrapper.js';
 import { InitVerificationInstructionBorsh } from '../txBuilding/serializedTypes/borshTypes/InitVerificationInstructionBorsh.js';
@@ -98,7 +98,7 @@ export class InitVerificationInstruction extends InitVerificationInstructionBase
             publicInputs.join_split.metadata,
             rvk,
             commHash,
-        ) : { tokenType: getTokenType(publicInputs.join_split.token_id), assocCommIndex: publicInputs.join_split.recent_commitment_index };
+        ) : { tokenType: getTokenTypeFromNumber(publicInputs.join_split.token_id), assocCommIndex: publicInputs.join_split.recent_commitment_index };
 
         return new InitVerificationInstruction(
             parsed.verification_account_index,

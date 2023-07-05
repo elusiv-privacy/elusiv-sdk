@@ -91,13 +91,18 @@ export function getDenomination(t: TokenType): number {
     return getTokenInfo(t).denomination;
 }
 
-export function getTokenType(t: number): TokenType {
+/**
+ * Returns the token type associated with a 16 bit uint. Analog to {@link getNumberFromTokenType}
+ * @param t The number to get the token type of
+ * @returns The token type associated with the number
+ */
+export function getTokenTypeFromNumber(t: number): TokenType {
     if (t >= TokenTypeArr.length) throw new Error(INVALID_TOKEN_TYPE);
     return TokenTypeArr[t];
 }
 
 /**
- * Returns the number associated with a token type as a 16 bit uint.
+ * Returns the number associated with a token type as a 16 bit uint. Analog to {@link getTokenTypeFromNumber}
  * @param t The token type to get the number of
  * @returns The number associated with the token type
  */

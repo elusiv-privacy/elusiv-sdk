@@ -8,7 +8,7 @@ import {
     concatBytes, serializeUint16LE, serializeUint32LE, serializeUint64LE, serializeUintLE,
 } from '@elusiv/serialization';
 import { MAX_UINT20, MAX_UINT32, MAX_UINT64 } from '../../constants.js';
-import { getNumberFromTokenType, getTokenType } from '../../public/tokenTypes/TokenTypeFuncs.js';
+import { getNumberFromTokenType, getTokenTypeFromNumber } from '../../public/tokenTypes/TokenTypeFuncs.js';
 import { EncryptedValue } from './encryption.js';
 import { RVKWrapper } from './RVKWrapper.js';
 import { TokenType } from '../../public/tokenTypes/TokenType.js';
@@ -63,7 +63,7 @@ export class CommitmentMetadata {
         if (serializedMetadata.length !== COMMITMENT_METADATA_LENGTH) throw new Error('Invalid length for metadata');
         return new CommitmentMetadata(
             deserializeUint32LE(serializedMetadata.slice(0, 4)),
-            getTokenType(deserializeUint16LE(serializedMetadata.slice(4, 6))),
+            getTokenTypeFromNumber(deserializeUint16LE(serializedMetadata.slice(4, 6))),
             Number(deserializeUintLE(serializedMetadata.slice(6, 9), 3)),
             deserializeUint64LE(serializedMetadata.slice(9, 17)),
         );
@@ -72,7 +72,7 @@ export class CommitmentMetadata {
     public static fromCommitment(nonce: number, comm: IncompleteCommitment): CommitmentMetadata {
         return new CommitmentMetadata(
             nonce,
-            getTokenType(Number(comm.getTokenId())),
+            getTokenTypeFromNumber(Number(comm.getTokenId())),
             Number(comm.getAssocCommIndex()),
             BigInt(comm.getBalance()),
         );

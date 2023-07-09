@@ -1,6 +1,6 @@
 {
     "name": "@elusiv/sdk",
-    "version": "0.1.17",
+    "version": "0.1.18",
     "main": "index.mjs",
     "module": "index.mjs",
     "types": "index.d.ts",

@@ -1,6 +1,6 @@
 {
     "name": "@elusiv/sdk",
-    "version": "0.1.17",
+    "version": "0.1.18",
     "main": "index.mjs",
     "module": "index.mjs",
     "types": "index.d.ts",
@@ -29,9 +29,9 @@
         "bs58": "^5.0.0",
         "circomlibjs": "^0.1.7",
         "node-fetch": "^3.3.1",
-        "@elusiv/cryptojs": "^1.0.1",
-        "@elusiv/ffjavascript": "^0.2.57",
-        "@elusiv/serialization": "^1.0.1"
+        "@elusiv/cryptojs": "^1.0.12",
+        "@elusiv/serialization": "^1.0.11",
+        "@elusiv/ffjavascript": "^0.2.571"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
